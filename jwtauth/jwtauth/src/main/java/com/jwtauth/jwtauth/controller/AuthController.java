@@ -1,19 +1,20 @@
 package com.jwtauth.jwtauth.controller;
 
-import com.jwtauth.jwtauth.dto.LoginRequestDTO;
-import com.jwtauth.jwtauth.dto.LoginResponseDTO;
-import com.jwtauth.jwtauth.dto.RegisterRequestDTO;
-import com.jwtauth.jwtauth.dto.RegisterResponseDTO;
+import com.jwtauth.jwtauth.dto.*;
+import com.jwtauth.jwtauth.model.RefreshToken;
 import com.jwtauth.jwtauth.model.UserEntity;
 import com.jwtauth.jwtauth.service.AuthService;
 import com.jwtauth.jwtauth.service.JWTService;
+import com.jwtauth.jwtauth.service.RefreshTokenService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -24,11 +25,13 @@ public class AuthController {
     private final AuthService authService;
 
     private final JWTService jwtService;
+    private final RefreshTokenService refreshTokenService;
 
 
-    public AuthController(AuthService authService, JWTService jwtService) {
+    public AuthController(AuthService authService, JWTService jwtService, RefreshTokenService refreshTokenService) {
         this.authService = authService;
         this.jwtService = jwtService;
+        this.refreshTokenService = refreshTokenService;
     }
 
     // Get all users
@@ -80,6 +83,26 @@ public class AuthController {
         logger.info("Registration successful for user: {}", registerData.getUsername());
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
+
+
+
+    @PostMapping("/refreshToken")
+    public ResponseEntity<?> refreshToken(@RequestBody RefreshTokenRequestDTO refreshTokenRequest) {
+        return refreshTokenService.findByReToken(refreshTokenRequest.getReToken())
+                .map(refreshTokenService::verifyRefreshToken)
+                .map(RefreshToken::getUserEntity)
+                .map(userEntity -> {
+                    Map<String, Object> claims = new HashMap<>();
+                    claims.put("username", userEntity.getUsername());
+                    claims.put("email", userEntity.getEmail());
+                    String token = jwtService.getJWTToken(userEntity.getUsername(), claims);
+                    return ResponseEntity.ok(LoginResponseDTO.builder()
+                            .token(token)
+                            .reToken(refreshTokenRequest.getReToken())
+                            .build());
+                }).orElseThrow(() -> new RuntimeException("Refresh token is not in database!"));
+    }
+
 
 
 

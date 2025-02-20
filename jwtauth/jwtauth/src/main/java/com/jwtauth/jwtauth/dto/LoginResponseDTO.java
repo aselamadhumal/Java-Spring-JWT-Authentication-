@@ -1,20 +1,38 @@
 package com.jwtauth.jwtauth.dto;
 
-import java.time.LocalDateTime;
+import lombok.Builder;
 
+import java.time.LocalDateTime;
+@Builder
 public class LoginResponseDTO {
 
     private String token;
     private LocalDateTime time;
     private String error;
     private String message;
+    private String reToken;
+
+    public LoginResponseDTO(String token) {
+        this.token = token;
+    }
+
+    public String getReToken() {
+        return reToken;
+    }
+
+    public void setReToken(String reToken) {
+        this.reToken = reToken;
+    }
+
+
 
     // All-arguments constructor
-    public LoginResponseDTO(String token, LocalDateTime time, String error, String message) {
+    public LoginResponseDTO(String token, LocalDateTime time, String error, String message, String reToken) {
         this.token = token;
         this.time = time;
         this.error = error;
         this.message = message;
+        this.reToken = reToken;
     }
 
     // Getter and Setter for token

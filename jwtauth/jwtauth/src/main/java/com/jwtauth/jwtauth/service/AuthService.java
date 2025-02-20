@@ -4,6 +4,7 @@ import com.jwtauth.jwtauth.dto.LoginRequestDTO;
 import com.jwtauth.jwtauth.dto.LoginResponseDTO;
 import com.jwtauth.jwtauth.dto.RegisterRequestDTO;
 import com.jwtauth.jwtauth.dto.RegisterResponseDTO;
+import com.jwtauth.jwtauth.model.RefreshToken;
 import com.jwtauth.jwtauth.model.UserEntity;
 import com.jwtauth.jwtauth.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,12 +29,14 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JWTService jwtService;
+    private final RefreshTokenService refreshTokenService;
 
-    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JWTService jwtService) {
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JWTService jwtService, RefreshTokenService refreshTokenService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
+        this.refreshTokenService = refreshTokenService;
     }
 
     public List<UserEntity> getAllUsers() {
@@ -66,10 +69,10 @@ public class AuthService {
             );
         } catch (BadCredentialsException e) {
             logger.error("Authentication failed for user: {}", loginData.getUsername(), e);
-            return new LoginResponseDTO(null, null, "Invalid credentials", "The username or password is incorrect.");
+            return new LoginResponseDTO(null, null, "Invalid credentials", "The username or password is incorrect.","null");
         } catch (Exception e) {
             logger.error("Unexpected error during authentication. {}",e.getLocalizedMessage(), e);
-            return new LoginResponseDTO(null, null, "Authentication failed", "An unexpected error occurred during authentication.");
+            return new LoginResponseDTO(null, null, "Authentication failed", "An unexpected error occurred during authentication.","null");
         }
 
         Map<String, Object> claims = new HashMap<>();
@@ -78,7 +81,12 @@ public class AuthService {
 
         String token = jwtService.getJWTToken(loginData.getUsername(), claims);
         logger.info("Token generated for user: {}", loginData.getUsername());
-        return new LoginResponseDTO(token, LocalDateTime.now(), null, "Token generated successfully");
+
+        // Generate refresh token
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(loginData.getUsername());
+
+        // Return both tokens in the response
+        return new LoginResponseDTO(token, LocalDateTime.now(), null, "Token generated successfully",refreshToken.getReToken());
     }
 
     public RegisterResponseDTO register(RegisterRequestDTO registerData) {
