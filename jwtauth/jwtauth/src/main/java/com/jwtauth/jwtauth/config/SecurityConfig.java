@@ -3,6 +3,8 @@ package com.jwtauth.jwtauth.config;
 import com.jwtauth.jwtauth.filter.JWTFilter;
 import com.jwtauth.jwtauth.repository.UserRepository;
 import com.jwtauth.jwtauth.service.MyUserDetailsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -21,54 +23,58 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final UserRepository userRipository;
+    private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
+
+    private final UserRepository userRepository;
     private final JWTFilter jwtFilter;
 
-    public SecurityConfig(UserRepository userRipository, JWTFilter jwtFilter) {
-        this.userRipository = userRipository;
+    public SecurityConfig(UserRepository userRepository, JWTFilter jwtFilter) {
+        this.userRepository = userRepository;
         this.jwtFilter = jwtFilter;
+        logger.info("SecurityConfig initialized with UserRepository and JWTFilter");
     }
-
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        logger.info("Configuring security filter chain...");
+
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable) // Disable CSRF for APIs
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless session
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/auth/login","/api/v1/auth/register").permitAll()
-                        // Allow login & register endpoints
-                        .anyRequest().authenticated()
-                )
-
+                .sessionManagement(session -> {
+                    logger.info("Setting session management to STATELESS");
+                    session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                }) // Stateless session
+                .authorizeHttpRequests(auth -> {
+                    logger.info("Configuring endpoint access rules...");
+                    auth.requestMatchers("/api/v1/auth/login", "/api/v1/auth/register").permitAll();
+                    logger.info("Public endpoints allowed: /api/v1/auth/login, /api/v1/auth/register");
+                    auth.anyRequest().authenticated();
+                })
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-
                 .authenticationProvider(authenticationProvider())
                 .httpBasic(Customizer.withDefaults())
                 .build();
     }
 
     @Bean
-    public DaoAuthenticationProvider authenticationProvider(){
+    public DaoAuthenticationProvider authenticationProvider() {
+        logger.info("Creating DaoAuthenticationProvider...");
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-         provider.setUserDetailsService(userDetailsService());
+        provider.setUserDetailsService(userDetailsService());
         provider.setPasswordEncoder(passwordEncoder());
+        logger.info("DaoAuthenticationProvider initialized with custom UserDetailsService and PasswordEncoder");
         return provider;
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
+        logger.info("Initializing BCryptPasswordEncoder with strength 12");
         return new BCryptPasswordEncoder(12);
     }
 
-    /*@Bean
-    public UserDetailsService userDetailsService() {
-        return new MyUserDetailsService(passwordEncoder(),userRipository);
-    }*/
-
     @Bean
     public UserDetailsService userDetailsService() {
-        return new MyUserDetailsService(userRipository);
+        logger.info("Initializing custom UserDetailsService...");
+        return new MyUserDetailsService(userRepository);
     }
-
 }
