@@ -71,7 +71,7 @@ public class JWTFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-
+        //final step for authorization.when context doesn't authorize come to this step
         UserDetails userDetails = User.builder()
                 .username(userData.getUsername())
                 .password(userData.getPassword())
