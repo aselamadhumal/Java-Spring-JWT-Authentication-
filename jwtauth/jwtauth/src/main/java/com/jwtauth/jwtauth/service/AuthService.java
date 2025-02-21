@@ -1,9 +1,6 @@
 package com.jwtauth.jwtauth.service;
 
-import com.jwtauth.jwtauth.dto.LoginRequestDTO;
-import com.jwtauth.jwtauth.dto.LoginResponseDTO;
-import com.jwtauth.jwtauth.dto.RegisterRequestDTO;
-import com.jwtauth.jwtauth.dto.RegisterResponseDTO;
+import com.jwtauth.jwtauth.dto.*;
 import com.jwtauth.jwtauth.model.RefreshToken;
 import com.jwtauth.jwtauth.model.UserEntity;
 import com.jwtauth.jwtauth.repository.UserRepository;
@@ -12,7 +9,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class AuthService {
@@ -49,12 +46,7 @@ public class AuthService {
         UserEntity newUser = new UserEntity(
                 userData.getUsername(),
                 userData.getEmail(),
-
                 passwordEncoder.encode(userData.getPassword())
-
-
-
-
         );
         UserEntity savedUser = userRepository.save(newUser);
         logger.info("User created with ID: {}", savedUser.getId());
@@ -69,37 +61,57 @@ public class AuthService {
             );
         } catch (BadCredentialsException e) {
             logger.error("Authentication failed for user: {}", loginData.getUsername(), e);
-            return new LoginResponseDTO(null, null, "Invalid credentials", "The username or password is incorrect.","null");
+            return new LoginResponseDTO(null, null, "Invalid credentials", "The username or password is incorrect.", "null");
         } catch (Exception e) {
-            logger.error("Unexpected error during authentication. {}",e.getLocalizedMessage(), e);
-            return new LoginResponseDTO(null, null, "Authentication failed", "An unexpected error occurred during authentication.","null");
+            logger.error("Unexpected error during authentication: {}", e.getLocalizedMessage(), e);
+            return new LoginResponseDTO(null, null, "Authentication failed", "An unexpected error occurred during authentication.", "null");
         }
 
         Map<String, Object> claims = new HashMap<>();
-        claims.put("role", "user");
-        claims.put("email", "asela@gmail.com");
+        claims.put("username", loginData.getUsername());
 
         String token = jwtService.getJWTToken(loginData.getUsername(), claims);
         logger.info("Token generated for user: {}", loginData.getUsername());
 
-        // Generate refresh token
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(loginData.getUsername());
 
-        // Return both tokens in the response
-        return new LoginResponseDTO(token, LocalDateTime.now(), null, "Token generated successfully",refreshToken.getReToken());
+        return new LoginResponseDTO(token, LocalDateTime.now(), null, "Token generated successfully", refreshToken.getReToken());
+    }
+
+    public LoginResponseDTO refreshToken(RefreshTokenRequestDTO refreshTokenRequest) {
+        Optional<RefreshToken> refreshTokenOpt = refreshTokenService.findByReToken(refreshTokenRequest.getReToken());
+
+        if (refreshTokenOpt.isEmpty()) {
+            throw new RuntimeException("Refresh token is not in database!");
+        }
+
+        RefreshToken refreshToken = refreshTokenService.verifyRefreshToken(refreshTokenOpt.get());
+        UserEntity userEntity = refreshToken.getUserEntity();
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("username", userEntity.getUsername());
+        claims.put("email", userEntity.getEmail());
+
+        String token = jwtService.getJWTToken(userEntity.getUsername(), claims);
+        logger.info("New token generated for user: {}", userEntity.getUsername());
+
+        return new LoginResponseDTO(token, LocalDateTime.now(), null, "Token refreshed successfully", refreshTokenRequest.getReToken());
     }
 
     public RegisterResponseDTO register(RegisterRequestDTO registerData) {
         logger.info("Registering user with username: {}", registerData.getUsername());
+
         if (isUserEnabled(registerData.getUsername())) {
             logger.warn("User already exists: {}", registerData.getUsername());
             return new RegisterResponseDTO(null, "User already exists in the system");
         }
+
         UserEntity userData = this.createUser(registerData);
         if (userData.getId() == null) {
             logger.error("System error occurred while registering user: {}", registerData.getUsername());
             return new RegisterResponseDTO(null, "System error");
         }
+
         logger.info("User registered successfully with ID: {}", userData.getId());
         return new RegisterResponseDTO(String.format("User registered with ID %s", userData.getId()), null);
     }
