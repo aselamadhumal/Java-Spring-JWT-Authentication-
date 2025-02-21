@@ -6,15 +6,15 @@ import java.time.LocalDateTime;
 @Builder
 public class LoginResponseDTO {
 
-    private String token;
+    private String access_token;
     private LocalDateTime time;
     private String error;
     private String message;
     private String reToken;
 
 
-    public LoginResponseDTO(String token) {
-        this.token = token;
+    public LoginResponseDTO(String access_token) {
+        this.access_token = access_token;
     }
 
     public String getReToken() {
@@ -28,8 +28,8 @@ public class LoginResponseDTO {
 
 
     // All-arguments constructor
-    public LoginResponseDTO(String token, LocalDateTime time, String error, String message, String reToken) {
-        this.token = token;
+    public LoginResponseDTO(String access_token, LocalDateTime time, String error, String message, String reToken) {
+        this.access_token = access_token;
         this.time = time;
         this.error = error;
         this.message = message;
@@ -37,12 +37,12 @@ public class LoginResponseDTO {
     }
 
     // Getter and Setter for token
-    public String getToken() {
-        return token;
+    public String getAccess_token() {
+        return access_token;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setAccess_token(String access_token) {
+        this.access_token = access_token;
     }
 
     // Getter and Setter for time
