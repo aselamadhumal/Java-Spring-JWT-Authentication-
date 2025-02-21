@@ -79,24 +79,41 @@ public class AuthService {
     }
 
     public LoginResponseDTO refreshToken(RefreshTokenRequestDTO refreshTokenRequest) {
+        logger.info("Processing refresh token request.");
+
         Optional<RefreshToken> refreshTokenOpt = refreshTokenService.findByReToken(refreshTokenRequest.getReToken());
 
         if (refreshTokenOpt.isEmpty()) {
-            throw new RuntimeException("Refresh token is not in database!");
+            logger.warn("Refresh token not found in database.");
+            return new LoginResponseDTO(null, null, "Invalid refresh token", "Refresh token does not exist or is expired.", null);
         }
 
-        RefreshToken refreshToken = refreshTokenService.verifyRefreshToken(refreshTokenOpt.get());
-        UserEntity userEntity = refreshToken.getUserEntity();
+        try {
+            // Verify and invalidate the old refresh token
+            RefreshToken oldRefreshToken = refreshTokenOpt.get();
+            refreshTokenService.deleteRefreshToken(oldRefreshToken);
 
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("username", userEntity.getUsername());
-        claims.put("email", userEntity.getEmail());
+            // Retrieve user entity
+            UserEntity userEntity = oldRefreshToken.getUserEntity();
 
-        String token = jwtService.getJWTToken(userEntity.getUsername(), claims);
-        logger.info("New token generated for user: {}", userEntity.getUsername());
+            // Generate a new refresh token
+            RefreshToken newRefreshToken = refreshTokenService.createRefreshToken(userEntity.getUsername());
 
-        return new LoginResponseDTO(token, LocalDateTime.now(), null, "Token refreshed successfully", refreshTokenRequest.getReToken());
+            // Generate a new access token
+            Map<String, Object> claims = new HashMap<>();
+            claims.put("username", userEntity.getUsername());
+            String newAccessToken = jwtService.getJWTToken(userEntity.getUsername(), claims);
+
+            logger.info("New access & refresh tokens generated for user: {}", userEntity.getUsername());
+
+            return new LoginResponseDTO(newAccessToken, LocalDateTime.now(), null, "New tokens issued", newRefreshToken.getReToken());
+
+        } catch (Exception e) {
+            logger.error("Error while processing refresh token: {}", e.getMessage());
+            return new LoginResponseDTO(null, null, "Token refresh failed", "An error occurred while refreshing token.", null);
+        }
     }
+
 
     public RegisterResponseDTO register(RegisterRequestDTO registerData) {
         logger.info("Registering user with username: {}", registerData.getUsername());

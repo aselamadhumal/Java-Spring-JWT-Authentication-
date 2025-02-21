@@ -53,9 +53,9 @@ public class JWTService {
 
     //want to get username from the token
     public String getUserName(String token) {
-      Claims data =getTokenData(token);
-              if(data == null) return null;
-              return data.getSubject();
+        Claims data =getTokenData(token);
+        if(data == null) return null;
+        return data.getSubject();
     }
 
     public Object getFieldFromToken(String token, String key) {

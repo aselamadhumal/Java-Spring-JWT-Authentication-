@@ -5,6 +5,7 @@ import lombok.Builder;
 
 import java.time.Instant;
 
+
 @Builder
 @Entity
 public class RefreshToken {
@@ -18,6 +19,8 @@ public class RefreshToken {
 
     @Column(nullable = false)
     private Instant expiryDate;
+
+
 
     @OneToOne
     @JoinColumn(name = "id", referencedColumnName = "id")

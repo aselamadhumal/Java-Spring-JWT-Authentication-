@@ -26,9 +26,9 @@ public class HomeController {
     }*/
 
     @GetMapping("/username")
-        public String getUserName(@RequestParam String token){
-            return jwtService.getUserName(token);
-        }
+    public String getUserName(@RequestParam String token){
+        return jwtService.getUserName(token);
+    }
 
 
 

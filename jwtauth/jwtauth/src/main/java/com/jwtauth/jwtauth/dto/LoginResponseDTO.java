@@ -12,6 +12,7 @@ public class LoginResponseDTO {
     private String message;
     private String reToken;
 
+
     public LoginResponseDTO(String token) {
         this.token = token;
     }
