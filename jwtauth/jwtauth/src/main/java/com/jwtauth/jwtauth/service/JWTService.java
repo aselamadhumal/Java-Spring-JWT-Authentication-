@@ -5,10 +5,14 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.util.Base64;
 import java.util.Date;
 import java.util.Map;
 
@@ -17,10 +21,14 @@ public class JWTService {
 
     private static final Logger logger = LoggerFactory.getLogger(JWTService.class);
 
-    private final SecretKey secretKey;
+//    private final SecretKey secretKey;
+
+    @Value("${jwt.secret}")
+    private String jwtSecret;
+
 
     public JWTService() {
-        try {
+        /*try {
             logger.info("Initializing JWTService and generating secret key...");
             SecretKey k = KeyGenerator.getInstance("HmacSHA256").generateKey();
             secretKey = Keys.hmacShaKeyFor(k.getEncoded());
@@ -28,11 +36,15 @@ public class JWTService {
         } catch (Exception e) {
             logger.error("Error generating secret key for JWTService", e);
             throw new RuntimeException(e);
-        }
+        }*/
     }
 
     public String getJWTToken(String username, Map<String, Object> claims) {
         logger.info("Generating JWT token for user: {}", username);
+
+        byte[] decodedKey = Base64.getDecoder().decode(jwtSecret);
+        SecretKey secretKey = new SecretKeySpec(decodedKey, "HmacSHA256");
+
 
         String token = Jwts.builder()
                 .claims(claims)
@@ -48,6 +60,9 @@ public class JWTService {
 
     public String getRefreshToken(String username, Map<String, Object> claims) {
         logger.info("Generating refresh token for user: {}", username);
+
+        byte[] decodedKey = Base64.getDecoder().decode(jwtSecret);
+        SecretKey secretKey = new SecretKeySpec(decodedKey, "HmacSHA256");
 
         String refreshToken = Jwts.builder()
                 .claims(claims)
@@ -77,6 +92,9 @@ public class JWTService {
 
     // Parse the token and extract claims using parserBuilder()
     private Claims getTokenData(String token) {
+        byte[] decodedKey = Base64.getDecoder().decode(jwtSecret);
+        SecretKey secretKey = new SecretKeySpec(decodedKey, "HmacSHA256");
+
         try {
             // Parsing JWT token using Jwts.parserBuilder()
             return Jwts.parser()

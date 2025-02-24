@@ -2,18 +2,19 @@ package com.jwtauth.jwtauth.controller;
 
 import com.jwtauth.jwtauth.dto.*;
 import com.jwtauth.jwtauth.model.UserEntity;
+import com.jwtauth.jwtauth.repository.UserRepository;
 import com.jwtauth.jwtauth.service.AuthService;
 import com.jwtauth.jwtauth.service.JWTService;
+import com.jwtauth.jwtauth.service.TokenBlacklistService;
 import io.jsonwebtoken.ExpiredJwtException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -22,11 +23,15 @@ public class AuthController {
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
     private final AuthService authService;
     private final JWTService jwtService;
+    private final UserRepository userRepository;
+    @Autowired
+    private TokenBlacklistService tokenBlacklistService;
 
     // Fixed: Single constructor with proper field initialization
-    public AuthController(AuthService authService, JWTService jwtService) {
+    public AuthController(AuthService authService, JWTService jwtService, UserRepository userRepository) {
         this.authService = authService;
         this.jwtService = jwtService;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/list")
@@ -65,23 +70,41 @@ public class AuthController {
     // Fixed: Changed to use RequestBody and added proper error handling
     @PostMapping("/refresh")
     public ResponseEntity<?> refresh(@RequestBody RefreshTokenRequestDTO refreshRequest) {
-        logger.info("Refresh token request received");
-        String refreshToken = refreshRequest.getRefreshToken();
-
-        if (refreshToken == null || refreshToken.isEmpty()) {
-            logger.warn("Empty refresh token provided");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ErrorResponseDTO("AUTH-003", "Refresh token is required"));
-        }
-
         try {
+            String refreshRequestId = UUID.randomUUID().toString();
+            logger.info("refid: {}", refreshRequestId);
+
+            logger.info("Refresh token request received with ID: {}", refreshRequestId);
+
+            logger.info("Refresh token request received");
+            String refreshToken = refreshRequest.getRefreshToken();
+
+            if (refreshToken == null || refreshToken.isEmpty()) {
+                logger.warn("Empty refresh token provided");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(new ErrorResponseDTO("AUTH-003", "Refresh token is required"));
+            }
+
+
             logger.debug("Validating refresh token: {}", refreshToken);
             String username = jwtService.extractUsername(refreshToken); // Updated method name
             logger.info("Extracted username from refresh token: {}", username);
 
             if (username != null && jwtService.isTokenValid(refreshToken, username)) {
+                Optional<UserEntity> userEntity = userRepository.findByUsername(username);
+
+                if (userEntity.isEmpty()) {
+                    logger.info("No user found with this username{}", username);
+                    return null;
+                }
+
+                UserEntity user = userEntity.get();
+                user.setReferencesID(refreshRequestId);
+                userRepository.save(user);
+
                 Map<String, Object> claims = new HashMap<>();
                 claims.put("username", username);
+                claims.put("reference", refreshRequestId);
 
                 String newAccessToken = jwtService.getJWTToken(username, claims);
                 String newRefreshToken = jwtService.getRefreshToken(username, claims); // Implement token rotation
@@ -95,20 +118,41 @@ public class AuthController {
             } else {
                 logger.warn("Token validation failed for user: {}", username);
             }
+
+
+
+
+            logger.warn("Invalid refresh token attempt");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new ErrorResponseDTO("AUTH-002", "Invalid refresh token"));
         } catch (ExpiredJwtException e) {
             logger.error("Refresh token expired: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(new ErrorResponseDTO("AUTH-004", "Refresh token expired"));
         } catch (Exception e) {
             logger.error("Token refresh failed: {}", e.getMessage(), e);
-        }
 
-        logger.warn("Invalid refresh token attempt");
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(new ErrorResponseDTO("AUTH-002", "Invalid refresh token"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new ErrorResponseDTO("AUTH-004", "Token refresh failed"));
+        }
     }
 
+    /*@PostMapping("/logout")
+    public ResponseEntity<String> logout(@RequestHeader("Authorization") String token) {
+        // Remove the 'Bearer ' prefix if it exists
+        if (token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+        tokenBlacklistService.blacklistToken(token);
+        return ResponseEntity.ok("Successfully logged out and token blacklisted");
+    }*/
 
+    @PostMapping("/logout")
+    public String logout(@RequestBody LogoutRequestDTO logoutRequest) {
+        tokenBlacklistService.blacklistToken(logoutRequest.getAccessToken());
+        tokenBlacklistService.blacklistToken(logoutRequest.getRefreshToken());
+        return "Logged out successfully";
+    }
 
 
 }

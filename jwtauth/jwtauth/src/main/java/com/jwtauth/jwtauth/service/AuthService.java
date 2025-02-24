@@ -1,20 +1,21 @@
 package com.jwtauth.jwtauth.service;
 
-import com.jwtauth.jwtauth.dto.*;
+import com.jwtauth.jwtauth.dto.LoginRequestDTO;
+import com.jwtauth.jwtauth.dto.LoginResponseDTO;
+import com.jwtauth.jwtauth.dto.RegisterRequestDTO;
+import com.jwtauth.jwtauth.dto.RegisterResponseDTO;
 import com.jwtauth.jwtauth.model.UserEntity;
 import com.jwtauth.jwtauth.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class AuthService {
@@ -38,18 +39,26 @@ public class AuthService {
     }
 
     public UserEntity createUser(RegisterRequestDTO userData) {
+
         logger.info("Creating user with username: {}", userData.getUsername());
-        UserEntity newUser = new UserEntity(
-                userData.getUsername(),
-                userData.getEmail(),
-                passwordEncoder.encode(userData.getPassword())
-        );
+        UserEntity newUser = new UserEntity();
+        newUser.setUsername(userData.getUsername());
+        newUser.setPassword(passwordEncoder.encode(userData.getPassword()));
+        newUser.setEmail(userData.getEmail());
+
         UserEntity savedUser = userRepository.save(newUser);
         logger.info("User created with ID: {}", savedUser.getId());
         return savedUser;
     }
 
+
     public LoginResponseDTO login(LoginRequestDTO loginData) {
+        // Generate a unique identifier for this login attempt
+        String referencesID = UUID.randomUUID().toString();
+
+        logger.info("ref: {}", referencesID);
+
+        // Existing login logic
         logger.info("Attempting login for user: {}", loginData.getUsername());
         try {
             authenticationManager.authenticate(
@@ -63,15 +72,29 @@ public class AuthService {
             return new LoginResponseDTO(null, null, "Authentication failed", "An unexpected error occurred during authentication.", null);
         }
 
+        // Token generation logic
         Map<String, Object> claims = new HashMap<>();
         claims.put("username", loginData.getUsername());
+        claims.put("reference", referencesID);
 
         String accessToken = jwtService.getJWTToken(loginData.getUsername(), claims);
         String refreshToken = jwtService.getRefreshToken(loginData.getUsername(), claims);
 
+        Optional<UserEntity> userEntity = userRepository.findByUsername(loginData.getUsername());
+
+        if (userEntity.isEmpty()) {
+            logger.info("No user found with this username{}", loginData.getUsername());
+            return null;
+        }
+
+        UserEntity user = userEntity.get();
+        user.setReferencesID(referencesID);
+        userRepository.save(user);
+
         logger.info("Token generated successfully for user: {}", loginData.getUsername());
         return new LoginResponseDTO(accessToken, LocalDateTime.now(), null, "Token generated successfully", refreshToken);
     }
+
 
     public RegisterResponseDTO register(RegisterRequestDTO registerData) {
         logger.info("Registering user with username: {}", registerData.getUsername());
@@ -91,12 +114,10 @@ public class AuthService {
         }
     }
 
-    
-
-
     private boolean isUserEnabled(String username) {
         boolean isEnabled = userRepository.findByUsername(username).isPresent();
         logger.info("Is user '{}' enabled: {}", username, isEnabled);
         return isEnabled;
     }
+
 }
