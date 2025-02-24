@@ -1,32 +1,15 @@
 package com.jwtauth.jwtauth.dto;
 
+// Added DTO for refresh token request
 public class RefreshTokenRequestDTO {
-    private String reToken;
-    private String username;
+    private String refreshToken;
 
-    // Default constructor required for deserialization
-    public RefreshTokenRequestDTO() {
+    // Getters and setters
+    public String getRefreshToken() {
+        return refreshToken;
     }
 
-    // Constructor to initialize both fields
-    public RefreshTokenRequestDTO(String reToken, String username) {
-        this.reToken = reToken;
-        this.username = username;
-    }
-
-    public String getReToken() {
-        return reToken;
-    }
-
-    public void setReToken(String reToken) {
-        this.reToken = reToken;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 }
