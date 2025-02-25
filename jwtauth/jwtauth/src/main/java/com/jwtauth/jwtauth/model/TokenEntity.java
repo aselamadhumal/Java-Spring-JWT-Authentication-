@@ -1,15 +1,21 @@
 package com.jwtauth.jwtauth.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "blacklist_tokens")
 public class TokenEntity {
     @Id
+    @Column(name = "token", length = 700)
     private String token;
     private LocalDateTime blacklistedAt;
 
@@ -21,19 +27,5 @@ public class TokenEntity {
         this.blacklistedAt = blacklistedAt;
     }
 
-    public String getToken() {
-        return token;
-    }
 
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public LocalDateTime getBlacklistedAt() {
-        return blacklistedAt;
-    }
-
-    public void setBlacklistedAt(LocalDateTime blacklistedAt) {
-        this.blacklistedAt = blacklistedAt;
-    }
 }

@@ -148,10 +148,15 @@ public class AuthController {
     }*/
 
     @PostMapping("/logout")
-    public String logout(@RequestBody LogoutRequestDTO logoutRequest) {
-        tokenBlacklistService.blacklistToken(logoutRequest.getAccessToken());
-        tokenBlacklistService.blacklistToken(logoutRequest.getRefreshToken());
-        return "Logged out successfully";
+    public ResponseEntity<String> logout(@RequestBody LogoutRequestDTO logoutRequest) {
+        String accessToken = logoutRequest.getAccessToken();
+        String refreshToken = logoutRequest.getRefreshToken();
+
+        // Blacklist both access and refresh tokens
+        tokenBlacklistService.blacklistToken(accessToken);
+        tokenBlacklistService.blacklistToken(refreshToken);
+
+        return ResponseEntity.ok("Successfully logged out and tokens blacklisted");
     }
 
 

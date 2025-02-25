@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -35,7 +36,17 @@ public class UserEntity {
 
     private String referencesID;
 
+    private LocalDateTime expireAt;
 
-    private String refreshRequestId;
+
+
+
+
+
+    // New field to track whether the user is blacklisted
+    //private Boolean blacklisted = false;
+
+    // Optional: DateTime to track when the user was blacklisted
+    //private LocalDateTime blacklistedAt;
 
 }
