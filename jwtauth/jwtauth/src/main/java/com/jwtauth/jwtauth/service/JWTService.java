@@ -2,14 +2,11 @@ package com.jwtauth.jwtauth.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
@@ -91,7 +88,7 @@ public class JWTService {
     }
 
     // Parse the token and extract claims using parserBuilder()
-    private Claims getTokenData(String token) {
+    public Claims getTokenData(String token) {
         byte[] decodedKey = Base64.getDecoder().decode(jwtSecret);
         SecretKey secretKey = new SecretKeySpec(decodedKey, "HmacSHA256");
 
@@ -121,6 +118,8 @@ public class JWTService {
         return claims.getExpiration().before(new Date()); // Check if the token is expired
     }
 
+
+
     // Extract username from the token (this method can be simplified)
     public String extractUsername(String token) {
         Claims claims = getTokenData(token);
@@ -129,4 +128,13 @@ public class JWTService {
         }
         return null;
     }
+
+
+    /*public Date getExpiresAt(String token) {
+        Claims claims = getTokenData(token);
+        if (claims != null) {
+            return claims.getExpiration(); // Get the expiration date from claims
+        }
+        return null;
+    }*/
 }

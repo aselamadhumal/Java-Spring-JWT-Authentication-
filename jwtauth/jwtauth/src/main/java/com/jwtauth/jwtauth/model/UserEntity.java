@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Table(name = "users", uniqueConstraints = {
@@ -33,20 +32,12 @@ public class UserEntity {
     @Column(nullable = false)
     private String password;
 
-
     private String referencesID;
 
     private LocalDateTime expireAt;
 
-
-
-
-
-
-    // New field to track whether the user is blacklisted
     //private Boolean blacklisted = false;
+   // private LocalDateTime expiresAt;
 
-    // Optional: DateTime to track when the user was blacklisted
-    //private LocalDateTime blacklistedAt;
 
 }

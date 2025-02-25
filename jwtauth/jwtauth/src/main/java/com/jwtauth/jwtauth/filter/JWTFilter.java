@@ -3,7 +3,6 @@ package com.jwtauth.jwtauth.filter;
 import com.jwtauth.jwtauth.model.UserEntity;
 import com.jwtauth.jwtauth.repository.UserRepository;
 import com.jwtauth.jwtauth.service.JWTService;
-import com.jwtauth.jwtauth.service.TokenBlacklistService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,7 +19,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.UUID;
+import java.time.LocalDateTime;
 
 @Component
 public class JWTFilter extends OncePerRequestFilter {
@@ -29,12 +28,12 @@ public class JWTFilter extends OncePerRequestFilter {
 
     private final JWTService jwtService;
     private final UserRepository userRepository;
-    private final TokenBlacklistService tokenBlacklistService;
+    //private final TokenBlacklistService tokenBlacklistService;
 
-    public JWTFilter(JWTService jwtService, UserRepository userRepository, TokenBlacklistService tokenBlacklistService) {
+    public JWTFilter(JWTService jwtService, UserRepository userRepository) {
         this.jwtService = jwtService;
         this.userRepository = userRepository;
-        this.tokenBlacklistService = tokenBlacklistService;
+        //this.tokenBlacklistService = tokenBlacklistService;
     }
 
     @Override
@@ -51,11 +50,15 @@ public class JWTFilter extends OncePerRequestFilter {
         String jwtToken = authorization.substring(7); // Extract token
         logger.info("Extracted JWT Token: {}", jwtToken);
 
-        if (tokenBlacklistService.isTokenBlacklisted(jwtToken)) {
+        /*if (tokenBlacklistService.isTokenBlacklisted(jwtToken)) {
             logger.warn("Token is blacklisted");
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token is blacklisted");
             return;
-        }
+        }*/
+
+
+
+
 
         String username = jwtService.getUserName(jwtToken);
         logger.info("User from JWT: {}", username);
@@ -81,6 +84,22 @@ public class JWTFilter extends OncePerRequestFilter {
             return;
         }
 
+
+        // Check if the user session has been invalidated based on the ReferencesID comparison
+        if (userData.getReferencesID() == null || !jwtService.getTokenData(jwtToken).get("reference").toString().equals(userData.getReferencesID())) {
+            logger.warn("User session has been invalidated (ReferencesID mismatch or null): {}", username);
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        // Check if the session is expired using expireAt column
+        if (userData.getExpireAt() != null && userData.getExpireAt().isBefore(LocalDateTime.now())) {
+            logger.warn("User session has expired (expireAt is in the past): {}", username);
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+
         UserDetails userDetails = User.builder()
                 .username(userData.getUsername())
                 .password(userData.getPassword())
@@ -98,5 +117,9 @@ public class JWTFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
         logger.info("Filter chain continued for user: {}", userDetails.getUsername());
+
+
+
+
     }
 }

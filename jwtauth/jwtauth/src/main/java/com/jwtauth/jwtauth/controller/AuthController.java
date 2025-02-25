@@ -5,7 +5,6 @@ import com.jwtauth.jwtauth.model.UserEntity;
 import com.jwtauth.jwtauth.repository.UserRepository;
 import com.jwtauth.jwtauth.service.AuthService;
 import com.jwtauth.jwtauth.service.JWTService;
-import com.jwtauth.jwtauth.service.TokenBlacklistService;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,8 +23,7 @@ public class AuthController {
     private final AuthService authService;
     private final JWTService jwtService;
     private final UserRepository userRepository;
-    @Autowired
-    private TokenBlacklistService tokenBlacklistService;
+
 
     // Fixed: Single constructor with proper field initialization
     public AuthController(AuthService authService, JWTService jwtService, UserRepository userRepository) {
@@ -57,6 +55,8 @@ public class AuthController {
     public ResponseEntity<RegisterResponseDTO> register(@RequestBody RegisterRequestDTO registerData) {
         logger.info("Registration attempt for user: {}", registerData.getUsername());
         RegisterResponseDTO res = authService.register(registerData);
+
+
 
         if (res.getError() != null) {
             logger.warn("Registration failed for user: {}. Reason: {}", registerData.getUsername(), res.getError());
@@ -147,16 +147,34 @@ public class AuthController {
         return ResponseEntity.ok("Successfully logged out and token blacklisted");
     }*/
 
+    /*@PostMapping("/logout")
+    public ResponseEntity<String> logout(@RequestHeader("Authorization")  String referenceId,String token) {
+        if (referenceId != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+
+
+        // Add logic to handle token invalidation or blacklisting
+        // Example: Save token to a blacklist or remove from a valid session store
+        // You might also want to set the user's reference ID to null or update their session status
+
+        return ResponseEntity.ok("Successfully logged out and token blacklisted");
+    }*/
+
+
+
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(@RequestBody LogoutRequestDTO logoutRequest) {
-        String accessToken = logoutRequest.getAccessToken();
-        String refreshToken = logoutRequest.getRefreshToken();
+    public ResponseEntity<String> logout(@RequestBody LogoutRequestDTO logoutRequestDTO) {
+        try {
+            // Call the AuthService to process the logout
+            authService.logout(logoutRequestDTO.getAccessToken());
 
-        // Blacklist both access and refresh tokens
-        tokenBlacklistService.blacklistToken(accessToken);
-        tokenBlacklistService.blacklistToken(refreshToken);
-
-        return ResponseEntity.ok("Successfully logged out and tokens blacklisted");
+            // Return a success response if no exception is thrown
+            return ResponseEntity.ok("Successfully logged out");
+        } catch (RuntimeException e) {
+            // Return a failure response with the error message if an exception occurs
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
 

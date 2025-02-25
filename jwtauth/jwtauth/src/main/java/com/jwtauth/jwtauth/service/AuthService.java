@@ -1,11 +1,9 @@
 package com.jwtauth.jwtauth.service;
 
-import com.jwtauth.jwtauth.dto.LoginRequestDTO;
-import com.jwtauth.jwtauth.dto.LoginResponseDTO;
-import com.jwtauth.jwtauth.dto.RegisterRequestDTO;
-import com.jwtauth.jwtauth.dto.RegisterResponseDTO;
+import com.jwtauth.jwtauth.dto.*;
 import com.jwtauth.jwtauth.model.UserEntity;
 import com.jwtauth.jwtauth.repository.UserRepository;
+import io.jsonwebtoken.Claims;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,6 +11,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -56,6 +55,8 @@ public class AuthService {
         // Generate a unique identifier for this login attempt
         String referencesID = UUID.randomUUID().toString();
 
+
+
         logger.info("ref: {}", referencesID);
 
         // Existing login logic
@@ -89,6 +90,7 @@ public class AuthService {
 
         UserEntity user = userEntity.get();
         user.setReferencesID(referencesID);
+        user.setExpireAt(LocalDateTime.now().plusMinutes(15));
         userRepository.save(user);
 
         logger.info("Token generated successfully for user: {}", loginData.getUsername());
@@ -113,6 +115,74 @@ public class AuthService {
             return new RegisterResponseDTO(null, "System error during registration");
         }
     }
+
+    /*public LogoutRequestDTO logout(String accessToken) {
+
+        Claims claims =jwtService.getTokenData(accessToken);
+        String reference = claims.get("reference").toString();
+        String username = claims.getSubject();
+
+        if (!StringUtils.hasLength(reference)) {
+            logger.warn("No reference ID found in the provided token.");
+            return new LogoutRequestDTO("Invalid token or reference ID not found", null);
+        }
+
+        Optional<UserEntity> userEntity = userRepository.findByUsername(username);
+
+        if (userEntity.isEmpty()) {
+            logger.warn("No user found with reference ID: {}", reference);
+            return new LogoutRequestDTO("User not found or already logged out", null);
+        }
+
+        UserEntity user = userEntity.get();
+
+
+        user.setReferencesID(null);
+        userRepository.save(user);
+
+        logger.info("User with reference ID: {} has been successfully logged out.", reference);
+
+        // Optional: If you are maintaining a session store (like Redis), you can also remove the session here.
+        // sessionStore.remove(referencesID);
+
+        return new LogoutRequestDTO("Successfully logged out", null);
+    }*/
+
+
+
+    public void logout(String accessToken) {
+
+        Claims claims = jwtService.getTokenData(accessToken);
+        String reference = claims.get("reference").toString();
+        String username = claims.getSubject();
+
+        if (!StringUtils.hasLength(reference)) {
+            logger.warn("No reference ID found in the provided token.");
+            throw new RuntimeException("Invalid token or reference ID not found");
+        }
+
+        Optional<UserEntity> userEntity = userRepository.findByUsername(username);
+
+        if (userEntity.isEmpty()) {
+            logger.warn("No user found with reference ID: {}", reference);
+            throw new RuntimeException("User not found or already logged out");
+        }
+
+
+
+
+
+        UserEntity user = userEntity.get();
+        user.setReferencesID(null);
+
+        userRepository.save(user);
+
+        logger.info("User with reference ID: {} has been successfully logged out.", reference);
+
+        // Optional: If you are maintaining a session store (like Redis), you can also remove the session here.
+        // sessionStore.remove(referencesID);
+    }
+
 
     private boolean isUserEnabled(String username) {
         boolean isEnabled = userRepository.findByUsername(username).isPresent();

@@ -7,5 +7,5 @@ import lombok.*;
 public class LogoutRequestDTO {
 
     private String accessToken;
-    private String refreshToken;
+
 }
