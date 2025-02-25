@@ -49,7 +49,7 @@ public class SecurityConfig {
                 }) // Stateless session
                 .authorizeHttpRequests(auth -> {
                     logger.info("Configuring endpoint access rules...");
-                    auth.requestMatchers("/api/v1/auth/login", "/api/v1/auth/register","/api/v1/auth/refresh","api/transactions/process","api/transactions/enc","api/transactions/dec").permitAll();
+                    auth.requestMatchers("/api/v1/auth/login", "/api/v1/auth/register","/api/v1/auth/refresh","/api/v1/auth/logout","api/transactions/process","api/transactions/enc","api/transactions/dec").permitAll();
                     logger.info("Public endpoints allowed: /api/v1/auth/login, /api/v1/auth/register");
                     auth.anyRequest().authenticated();
                 })

@@ -1,33 +1,17 @@
 package com.jwtauth.jwtauth.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class RefreshTokenResponseDTO {
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public String getReToken() {
-        return reToken;
-    }
-
-    public void setReToken(String reToken) {
-        this.reToken = reToken;
-    }
-
-    public RefreshTokenResponseDTO(String reToken, String token) {
-        this.reToken = reToken;
-        this.token = token;
-    }
 
     private String token;
     private String reToken;
-
-
-
-
 
 }

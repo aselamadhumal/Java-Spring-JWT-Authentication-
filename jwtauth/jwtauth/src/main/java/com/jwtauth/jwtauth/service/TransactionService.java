@@ -47,15 +47,15 @@ public class TransactionService {
             transaction.setAccountNo(decryptedAccountNo);
             transaction.setNic(decryptedNic);
             transaction.setAmount(request.getAmount());
+            transaction.setRemark(request.getRemark());
 
             TransactionEntity savedTransaction = transactionRepository.save(transaction);
             logger.info("Transaction saved with ID: {}", savedTransaction.getId());
 
             return "Transaction successful for account: " + decryptedAccountNo +
                     " | Amount: " + request.getAmount() +
-                    " | NIC: " + decryptedNic;
-
-
+                    " | NIC: " + decryptedNic +
+                    " | Remark:" + request.getRemark();
 
         } catch (Exception e) {
             logger.error("Error during transaction for account: {}: {}", request.getAccountNo(), e.getMessage(), e);
