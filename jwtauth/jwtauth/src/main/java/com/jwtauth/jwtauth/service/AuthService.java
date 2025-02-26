@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class AuthService {
@@ -63,6 +64,10 @@ public class AuthService {
             return new LoginResponseDTO(null, null, "Authentication failed", "An unexpected error occurred during authentication.", null);
         }
 
+        UUID loginAttemptId = UUID.randomUUID();
+        logger.info("Login attempt ID: {}", loginAttemptId);
+
+
         Map<String, Object> claims = new HashMap<>();
         claims.put("username", loginData.getUsername());
 
@@ -91,7 +96,11 @@ public class AuthService {
         }
     }
 
-    
+
+
+
+
+
 
 
     private boolean isUserEnabled(String username) {

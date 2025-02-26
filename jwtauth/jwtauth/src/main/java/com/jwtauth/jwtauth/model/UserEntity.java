@@ -2,6 +2,8 @@ package com.jwtauth.jwtauth.model;
 
 import jakarta.persistence.*;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "users", uniqueConstraints = {
         @UniqueConstraint(columnNames = "email"),
@@ -21,6 +23,21 @@ public class UserEntity {
 
     @Column(nullable = false)
     private String password;
+
+    public UUID getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(UUID sessionId) {
+        this.sessionId = sessionId;
+    }
+
+    public UserEntity(UUID sessionId) {
+        this.sessionId = sessionId;
+    }
+
+    @Column(nullable = false)
+    private UUID sessionId;
 
     // Default constructor
     public UserEntity() {

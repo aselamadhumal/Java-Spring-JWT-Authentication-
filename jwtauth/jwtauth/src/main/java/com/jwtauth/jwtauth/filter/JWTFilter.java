@@ -3,6 +3,7 @@ package com.jwtauth.jwtauth.filter;
 import com.jwtauth.jwtauth.model.UserEntity;
 import com.jwtauth.jwtauth.repository.UserRepository;
 import com.jwtauth.jwtauth.service.JWTService;
+import com.jwtauth.jwtauth.service.TokenBlacklistService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,10 +29,12 @@ public class JWTFilter extends OncePerRequestFilter {
 
     private final JWTService jwtService;
     private final UserRepository userRepository;
+    private final TokenBlacklistService tokenBlacklistService;
 
-    public JWTFilter(JWTService jwtService, UserRepository userRepository) {
+    public JWTFilter(JWTService jwtService, UserRepository userRepository, TokenBlacklistService tokenBlacklistService) {
         this.jwtService = jwtService;
         this.userRepository = userRepository;
+        this.tokenBlacklistService = tokenBlacklistService;
     }
 
     @Override
@@ -47,6 +50,12 @@ public class JWTFilter extends OncePerRequestFilter {
 
         String jwtToken = authorization.substring(7); // Extract token
         logger.info("Extracted JWT Token: {}", jwtToken);
+
+        if (tokenBlacklistService.isTokenBlacklisted(jwtToken)) {
+            logger.warn("Token is blacklisted");
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token is blacklisted");
+            return;
+        }
 
         String username = jwtService.getUserName(jwtToken);
         logger.info("User from JWT: {}", username);
@@ -71,7 +80,7 @@ public class JWTFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        //final step for authorization.when context doesn't authorize come to this step
+
         UserDetails userDetails = User.builder()
                 .username(userData.getUsername())
                 .password(userData.getPassword())

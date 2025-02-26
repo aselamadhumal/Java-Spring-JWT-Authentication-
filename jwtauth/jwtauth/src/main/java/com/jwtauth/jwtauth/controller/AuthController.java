@@ -4,7 +4,9 @@ import com.jwtauth.jwtauth.dto.*;
 import com.jwtauth.jwtauth.model.UserEntity;
 import com.jwtauth.jwtauth.service.AuthService;
 import com.jwtauth.jwtauth.service.JWTService;
+import com.jwtauth.jwtauth.service.TokenBlacklistService;
 import io.jsonwebtoken.ExpiredJwtException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -107,6 +109,29 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(new ErrorResponseDTO("AUTH-002", "Invalid refresh token"));
     }
+
+
+    @Autowired
+    private TokenBlacklistService tokenBlacklistService;
+
+    /*@PostMapping("/logout")
+    public ResponseEntity<String> logout(@RequestHeader("Authorization") String token) {
+        // Remove the 'Bearer ' prefix if it exists
+        if (token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+        tokenBlacklistService.blacklistToken(token);
+        return ResponseEntity.ok("Successfully logged out and token blacklisted");
+    }*/
+
+    @PostMapping("/logout")
+    public String logout(@RequestBody LogoutRequestDTO logoutRequest) {
+        tokenBlacklistService.blacklistToken(logoutRequest.getAccessToken());
+        tokenBlacklistService.blacklistToken(logoutRequest.getRefreshToken());
+        return "Logged out successfully";
+    }
+
+
 
 
 
