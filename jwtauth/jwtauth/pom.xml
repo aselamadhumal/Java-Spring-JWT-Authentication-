@@ -94,6 +94,19 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- Jakarta Annotation API (for Jakarta EE) -->
+
+
+		<!-- For Java EE (legacy) -->
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>javax.annotation-api</artifactId>
+			<version>1.3.2</version>
+		</dependency>
+
+
+
 	</dependencies>
 
 	<build>
