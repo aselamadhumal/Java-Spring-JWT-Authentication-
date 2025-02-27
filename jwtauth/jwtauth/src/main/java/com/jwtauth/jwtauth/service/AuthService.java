@@ -66,7 +66,8 @@ public class AuthService {
                     new UsernamePasswordAuthenticationToken(loginData.getUsername(), loginData.getPassword())
             );
         } catch (BadCredentialsException e) {
-            logger.warn("Authentication failed for user: {} - Invalid credentials", loginData.getUsername());
+            logger.warn("Authentication failed for user: {} - In" +
+                    "valid credentials", loginData.getUsername());
             return new LoginResponseDTO(null, null, "Invalid credentials", "The username or password is incorrect.", null);
         } catch (Exception e) {
             logger.error("Unexpected error during authentication for user {}: {}", loginData.getUsername(), e.getMessage(), e);
