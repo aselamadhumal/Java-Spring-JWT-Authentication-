@@ -5,50 +5,50 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
-import org.slf4j.Logger;
+//import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
 import java.io.IOException;
 import java.util.Enumeration;
+import ch.qos.logback.classic.Logger;
 
 @Component
 public class RequestLogFilter extends OncePerRequestFilter {
 
-    private static final Logger logger = LoggerFactory.getLogger(RequestLogFilter.class);
+    private static final Logger logger = (Logger) LoggerFactory.getLogger(java.util.logging.Logger.GLOBAL_LOGGER_NAME);
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        if (isAsyncDispatch(request)) {
-            filterChain.doFilter(request, response);
-            return;
-        }
+        // Wrap the request to read the body multiple times
+        BufferRequestWrapper wrappedRequest = new BufferRequestWrapper(request);
 
-        // Wrap the request and response to cache their content
-        ContentCachingRequestWrapper wrappedRequest = new ContentCachingRequestWrapper(request);
+        // Wrap the response to cache the response body
         ContentCachingResponseWrapper wrappedResponse = new ContentCachingResponseWrapper(response);
 
         try {
-            logger.info("Request Headers -> Content-type : {}", request.getContentType());
-            logHeaders(request);
-
-            // Log request details before proceeding with the filter chain
+            // Log incoming request details
             logger.info("Incoming Request: {} {}", wrappedRequest.getMethod(), wrappedRequest.getRequestURI());
+            logHeaders(wrappedRequest);
 
+            // Log request body only if the content type is appropriate
+            if (shouldLogRequestBody(wrappedRequest)) {
+                logRequestBody(wrappedRequest);
+            }
+
+            // Proceed with the filter chain using the wrapped request and response
             filterChain.doFilter(wrappedRequest, wrappedResponse);
-        } finally {
 
-            logRequestBody(wrappedRequest);
+        } finally {
+            // Log response details
             logResponseBody(wrappedResponse);
 
-            // Ensure the response is written back to the client
+            // Copy the response content to the original response
             wrappedResponse.copyBodyToResponse();
-
         }
     }
 
@@ -61,12 +61,16 @@ public class RequestLogFilter extends OncePerRequestFilter {
         }
     }
 
-    @SneakyThrows
-    private void logRequestBody(ContentCachingRequestWrapper request) {
-        byte[] content = request.getContentAsByteArray();
-        if (content.length > 0) {
-            String body = new String(content, request.getCharacterEncoding());
-            logger.info("Request Body: {}", body);
+    private boolean shouldLogRequestBody(HttpServletRequest request) {
+        String contentType = request.getContentType();
+        return contentType != null && (contentType.startsWith("application/json") || contentType.startsWith("application/xml"));
+    }
+
+    private void logRequestBody(BufferRequestWrapper request) {
+        String body = request.getBody();
+        if (body != null && !body.isEmpty()) {
+            // Log only the first 500 characters
+            logger.info("Request Body: {}", body.length() > 500 ? body.substring(0, 500) : body);
         }
     }
 
@@ -75,8 +79,8 @@ public class RequestLogFilter extends OncePerRequestFilter {
         byte[] content = response.getContentAsByteArray();
         if (content.length > 0) {
             String body = new String(content, response.getCharacterEncoding());
-            logger.info("Response Body: {}", body);
+            // Log only the first 500 characters of the response body
+            logger.info("Response Body: {}", body.length() > 500 ? body.substring(0, 500) : body);
         }
     }
 }
-

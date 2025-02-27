@@ -3,14 +3,10 @@ package com.jwtauth.jwtauth.config;
 import com.jwtauth.jwtauth.filter.JWTFilter;
 import com.jwtauth.jwtauth.repository.UserRepository;
 import com.jwtauth.jwtauth.service.MyUserDetailsService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,11 +18,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.util.logging.Logger;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
+    private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     private final UserRepository userRepository;
     private final JWTFilter jwtFilter;
