@@ -4,9 +4,17 @@
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
             <layout class="com.jwtauth.jwtauth.utils.MaskingPatternLayout">
-                <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] [%thread] %-5level %logger{36} - %msg%n</pattern>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] [%thread] %logger{36} - %msg%n</pattern>
                 <maskPattern>\"password\"\s*:\s*\"(.*?)\"</maskPattern>
                 <maskPattern>\"username\"\s*:\s*\"(.*?)\"</maskPattern>
+                <maskPattern>\"access_token\"\s*:\s*\"(.*?)\"</maskPattern>
+                <maskPattern>\"reToken\"\s*:\s*\"(.*?)\"</maskPattern>
+                <maskPattern>\"refreshToken\"\s*:\s*\"(.*?)\"</maskPattern>
+                <maskPattern>\"accountNo\"\s*:\s*\"(.*?)\"</maskPattern>
+                <maskPattern>\"nic\"\s*:\s*\"(.*?)\"</maskPattern>
+                <maskPattern>\"accessToken\"\s*:\s*\"(.*?)\"</maskPattern>
+                <maskPattern>\"account\"\s*:\s*\"(.*?)\"</maskPattern>
+                <maskPattern>\"NIC\"\s*:\s*\"(.*?)\"</maskPattern>
             </layout>
         </encoder>
     </appender>
@@ -15,9 +23,17 @@
         <file>./logs/application.log</file>
         <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
             <layout class="com.jwtauth.jwtauth.utils.MaskingPatternLayout">
-                <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %-5level %logger{36} - %msg%n</pattern>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
                 <maskPattern>\"password\"\s*:\s*\"(.*?)\"</maskPattern> <!-- Regex to match passwords -->
                 <maskPattern>\"username\"\s*:\s*\"(.*?)\"</maskPattern>
+                <maskPattern>\"access_token\"\s*:\s*\"(.*?)\"</maskPattern>
+                <maskPattern>\"reToken\"\s*:\s*\"(.*?)\"</maskPattern>
+                <maskPattern>\"refreshToken\"\s*:\s*\"(.*?)\"</maskPattern>
+                <maskPattern>\"accountNo\"\s*:\s*\"(.*?)\"</maskPattern>
+                <maskPattern>\"nic\"\s*:\s*\"(.*?)\"</maskPattern>
+                <maskPattern>\"accessToken\"\s*:\s*\"(.*?)\"</maskPattern>
+                <maskPattern>\"account\"\s*:\s*\"(.*?)\"</maskPattern>
+                <maskPattern>\"NIC\"\s*:\s*\"(.*?)\"</maskPattern>
             </layout>
         </encoder>
 
