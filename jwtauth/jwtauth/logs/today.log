@@ -1,0 +1,503 @@
+2025-02-28 17:23:05 [main] c.jwtauth.jwtauth.JwtauthApplication - Starting JwtauthApplication using Java 17.0.11 with PID 25412 (C:\Users\project\Desktop\Tasks\spring Jwt\jwtauth\jwtauth\target\classes started by project in C:\Users\project\Desktop\Tasks\spring Jwt\jwtauth\jwtauth)
+2025-02-28 17:23:05 [main] c.jwtauth.jwtauth.JwtauthApplication - No active profile set, falling back to 1 default profile: "default"
+2025-02-28 17:23:06 [main] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-02-28 17:23:06 [main] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 192 ms. Found 2 JPA repository interfaces.
+2025-02-28 17:23:07 [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 9095 (http)
+2025-02-28 17:23:07 [main] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-9095"]
+2025-02-28 17:23:07 [main] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-02-28 17:23:07 [main] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.34]
+2025-02-28 17:23:07 [main] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-02-28 17:23:07 [main] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1727 ms
+2025-02-28 17:23:07 [main] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-02-28 17:23:07 [main] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.5.Final
+2025-02-28 17:23:07 [main] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-02-28 17:23:08 [main] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-02-28 17:23:08 [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-02-28 17:23:08 [main] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7404aff2
+2025-02-28 17:23:08 [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-02-28 17:23:08 [main] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0.41
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-02-28 17:23:09 [main] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-02-28 17:23:09 [main] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-02-28 17:23:10 [main] global - SecurityConfig initialized with UserRepository and JWTFilter
+2025-02-28 17:23:10 [main] global - Initializing BCryptPasswordEncoder with strength 12
+2025-02-28 17:23:10 [main] global - Creating DaoAuthenticationProvider...
+2025-02-28 17:23:10 [main] global - Initializing custom UserDetailsService...
+2025-02-28 17:23:10 [main] global - DaoAuthenticationProvider initialized with custom UserDetailsService and PasswordEncoder
+2025-02-28 17:23:10 [main] o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2025-02-28 17:23:10 [main] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2025-02-28 17:23:10 [main] o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-02-28 17:23:10 [main] global - Configuring security filter chain...
+2025-02-28 17:23:10 [main] global - Setting session management to STATELESS
+2025-02-28 17:23:10 [main] global - Configuring endpoint access rules...
+2025-02-28 17:23:10 [main] o.s.s.c.a.w.c.AuthorizeHttpRequestsConfigurer$AuthorizationManagerRequestMatcherRegistry - One of the patterns in [/api/v1/auth/login, /api/v1/auth/register, /api/v1/auth/refresh, /api/v1/auth/logout, api/transactions/process, api/transactions/enc, api/transactions/dec, /user-details/save, /user-details/{userId}] is missing a leading slash. This is discouraged; please include the leading slash in all your request matcher patterns. In future versions of Spring Security, leaving out the leading slash will result in an exception.
+2025-02-28 17:23:10 [main] global - Public endpoints allowed: /api/v1/auth/login, /api/v1/auth/register
+2025-02-28 17:23:10 [main] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-9095"]
+2025-02-28 17:23:10 [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 9095 (http) with context path '/'
+2025-02-28 17:23:11 [main] c.jwtauth.jwtauth.JwtauthApplication - Started JwtauthApplication in 5.905 seconds (process running for 6.712)
+2025-02-28 17:28:27 [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-02-28 17:28:27 [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-02-28 17:28:27 [SpringApplicationShutdownHook] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-02-28 17:28:27 [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-02-28 17:28:27 [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-02-28 17:28:33 [main] c.jwtauth.jwtauth.JwtauthApplication - Starting JwtauthApplication using Java 17.0.11 with PID 16240 (C:\Users\project\Desktop\Tasks\spring Jwt\jwtauth\jwtauth\target\classes started by project in C:\Users\project\Desktop\Tasks\spring Jwt\jwtauth\jwtauth)
+2025-02-28 17:28:33 [main] c.jwtauth.jwtauth.JwtauthApplication - No active profile set, falling back to 1 default profile: "default"
+2025-02-28 17:28:33 [main] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-02-28 17:28:34 [main] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 183 ms. Found 2 JPA repository interfaces.
+2025-02-28 17:28:34 [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 9095 (http)
+2025-02-28 17:28:34 [main] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-9095"]
+2025-02-28 17:28:34 [main] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-02-28 17:28:34 [main] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.34]
+2025-02-28 17:28:34 [main] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-02-28 17:28:34 [main] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1701 ms
+2025-02-28 17:28:34 [main] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-02-28 17:28:35 [main] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.5.Final
+2025-02-28 17:28:35 [main] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-02-28 17:28:35 [main] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-02-28 17:28:35 [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-02-28 17:28:35 [main] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1e7d3d87
+2025-02-28 17:28:35 [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-02-28 17:28:36 [main] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0.41
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-02-28 17:28:37 [main] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-02-28 17:28:37 [main] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-02-28 17:28:37 [main] global - SecurityConfig initialized with UserRepository and JWTFilter
+2025-02-28 17:28:37 [main] global - Initializing BCryptPasswordEncoder with strength 12
+2025-02-28 17:28:37 [main] global - Creating DaoAuthenticationProvider...
+2025-02-28 17:28:37 [main] global - Initializing custom UserDetailsService...
+2025-02-28 17:28:37 [main] global - DaoAuthenticationProvider initialized with custom UserDetailsService and PasswordEncoder
+2025-02-28 17:28:37 [main] o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2025-02-28 17:28:37 [main] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2025-02-28 17:28:38 [main] o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-02-28 17:28:38 [main] global - Configuring security filter chain...
+2025-02-28 17:28:38 [main] global - Setting session management to STATELESS
+2025-02-28 17:28:38 [main] global - Configuring endpoint access rules...
+2025-02-28 17:28:38 [main] o.s.s.c.a.w.c.AuthorizeHttpRequestsConfigurer$AuthorizationManagerRequestMatcherRegistry - One of the patterns in [/api/v1/auth/login, /api/v1/auth/register, /api/v1/auth/refresh, /api/v1/auth/logout, api/transactions/process, api/transactions/enc, api/transactions/dec, /user-details/save, /user-details/{userId}] is missing a leading slash. This is discouraged; please include the leading slash in all your request matcher patterns. In future versions of Spring Security, leaving out the leading slash will result in an exception.
+2025-02-28 17:28:38 [main] global - Public endpoints allowed: /api/v1/auth/login, /api/v1/auth/register
+2025-02-28 17:28:38 [main] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-9095"]
+2025-02-28 17:28:38 [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 9095 (http) with context path '/'
+2025-02-28 17:28:38 [main] c.jwtauth.jwtauth.JwtauthApplication - Started JwtauthApplication in 6.339 seconds (process running for 7.038)
+2025-02-28 17:33:11 [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-02-28 17:33:11 [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-02-28 17:33:11 [SpringApplicationShutdownHook] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-02-28 17:33:11 [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-02-28 17:33:12 [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-02-28 17:34:27 [main] c.jwtauth.jwtauth.JwtauthApplication - Starting JwtauthApplication using Java 17.0.11 with PID 16496 (C:\Users\project\Desktop\Tasks\spring Jwt\jwtauth\jwtauth\target\classes started by project in C:\Users\project\Desktop\Tasks\spring Jwt\jwtauth\jwtauth)
+2025-02-28 17:34:27 [main] c.jwtauth.jwtauth.JwtauthApplication - No active profile set, falling back to 1 default profile: "default"
+2025-02-28 17:34:28 [main] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-02-28 17:34:28 [main] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 105 ms. Found 2 JPA repository interfaces.
+2025-02-28 17:34:28 [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 9095 (http)
+2025-02-28 17:34:28 [main] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-9095"]
+2025-02-28 17:34:28 [main] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-02-28 17:34:28 [main] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.34]
+2025-02-28 17:34:28 [main] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-02-28 17:34:28 [main] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1029 ms
+2025-02-28 17:34:28 [main] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-02-28 17:34:28 [main] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.5.Final
+2025-02-28 17:34:28 [main] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-02-28 17:34:29 [main] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-02-28 17:34:29 [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-02-28 17:34:29 [main] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@540212be
+2025-02-28 17:34:29 [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-02-28 17:34:29 [main] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0.41
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-02-28 17:34:30 [main] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-02-28 17:34:30 [main] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-02-28 17:34:30 [main] global - SecurityConfig initialized with UserRepository and JWTFilter
+2025-02-28 17:34:30 [main] global - Initializing BCryptPasswordEncoder with strength 12
+2025-02-28 17:34:30 [main] global - Creating DaoAuthenticationProvider...
+2025-02-28 17:34:30 [main] global - Initializing custom UserDetailsService...
+2025-02-28 17:34:30 [main] global - DaoAuthenticationProvider initialized with custom UserDetailsService and PasswordEncoder
+2025-02-28 17:34:30 [main] o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2025-02-28 17:34:30 [main] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2025-02-28 17:34:30 [main] o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-02-28 17:34:30 [main] global - Configuring security filter chain...
+2025-02-28 17:34:30 [main] global - Setting session management to STATELESS
+2025-02-28 17:34:30 [main] global - Configuring endpoint access rules...
+2025-02-28 17:34:30 [main] o.s.s.c.a.w.c.AuthorizeHttpRequestsConfigurer$AuthorizationManagerRequestMatcherRegistry - One of the patterns in [/api/v1/auth/login, /api/v1/auth/register, /api/v1/auth/refresh, /api/v1/auth/logout, api/transactions/process, api/transactions/enc, api/transactions/dec, /user-details/save, /user-details/{userId}] is missing a leading slash. This is discouraged; please include the leading slash in all your request matcher patterns. In future versions of Spring Security, leaving out the leading slash will result in an exception.
+2025-02-28 17:34:30 [main] global - Public endpoints allowed: /api/v1/auth/login, /api/v1/auth/register
+2025-02-28 17:34:30 [main] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-9095"]
+2025-02-28 17:34:30 [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 9095 (http) with context path '/'
+2025-02-28 17:34:30 [main] c.jwtauth.jwtauth.JwtauthApplication - Started JwtauthApplication in 3.579 seconds (process running for 4.017)
+2025-02-28 17:34:34 [http-nio-9095-exec-3] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-02-28 17:34:34 [http-nio-9095-exec-3] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-02-28 17:34:34 [http-nio-9095-exec-3] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-02-28 17:34:34 [http-nio-9095-exec-3] c.jwtauth.jwtauth.filter.JWTFilter - Extracted JWT Token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhc2VsYSIsImlhdCI6MTczOTk1OTc5OCwiZXhwIjoxNzM5OTYwNjk4fQ.3UpveJ4O8BjD9TtMWPT22WcXDX9qdEe7sNpWqcKMpiM
+2025-02-28 17:34:34 [http-nio-9095-exec-3] c.jwtauth.jwtauth.service.JWTService - Error parsing or validating token
+io.jsonwebtoken.security.SignatureException: JWT signature does not match locally computed signature. JWT validity cannot be asserted and should not be trusted.
+	at io.jsonwebtoken.impl.DefaultJwtParser.verifySignature(DefaultJwtParser.java:340)
+	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:579)
+	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:364)
+	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:94)
+	at io.jsonwebtoken.impl.io.AbstractParser.parse(AbstractParser.java:36)
+	at io.jsonwebtoken.impl.io.AbstractParser.parse(AbstractParser.java:29)
+	at io.jsonwebtoken.impl.DefaultJwtParser.parseSignedClaims(DefaultJwtParser.java:830)
+	at com.jwtauth.jwtauth.service.JWTService.getTokenData(JWTService.java:100)
+	at com.jwtauth.jwtauth.service.JWTService.getUserName(JWTService.java:78)
+	at com.jwtauth.jwtauth.filter.JWTFilter.doFilterInternal(JWTFilter.java:59)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$3(HandlerMappingIntrospector.java:243)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:238)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:362)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:278)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:397)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:905)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+2025-02-28 17:34:34 [http-nio-9095-exec-3] c.jwtauth.jwtauth.filter.JWTFilter - User from JWT: null
+2025-02-28 17:34:34 [http-nio-9095-exec-3] c.jwtauth.jwtauth.filter.JWTFilter - Username extracted from JWT is null
+2025-02-28 17:34:34 [http-nio-9095-exec-3] global - Incoming Request: POST /api/v1/auth/login
+2025-02-28 17:34:34 [http-nio-9095-exec-3] global - Header -> content-type : application/json
+2025-02-28 17:34:34 [http-nio-9095-exec-3] global - Header -> authorization : Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhc2VsYSIsImlhdCI6MTczOTk1OTc5OCwiZXhwIjoxNzM5OTYwNjk4fQ.3UpveJ4O8BjD9TtMWPT22WcXDX9qdEe7sNpWqcKMpiM
+2025-02-28 17:34:34 [http-nio-9095-exec-3] global - Header -> user-agent : PostmanRuntime/7.43.0
+2025-02-28 17:34:34 [http-nio-9095-exec-3] global - Header -> accept : */*
+2025-02-28 17:34:34 [http-nio-9095-exec-3] global - Header -> postman-token : 38f56541-d8c7-4e04-80fe-5de29fa1fb67
+2025-02-28 17:34:34 [http-nio-9095-exec-3] global - Header -> host : localhost:9095
+2025-02-28 17:34:34 [http-nio-9095-exec-3] global - Header -> accept-encoding : gzip, deflate, br
+2025-02-28 17:34:34 [http-nio-9095-exec-3] global - Header -> connection : keep-alive
+2025-02-28 17:34:34 [http-nio-9095-exec-3] global - Header -> content-length : 116
+2025-02-28 17:34:34 [http-nio-9095-exec-3] global - Request Body: {
+    "username": "*****",
+    "email": "ddddddsddbsdd@fggfgfddff.com",
+    "password": "*****"
+}  
+
+2025-02-28 17:34:34 [http-nio-9095-exec-3] c.j.j.controller.AuthController - Login attempt for user: JJbKJ
+2025-02-28 17:34:34 [http-nio-9095-exec-3] c.j.jwtauth.service.AuthService - ref: 760297b8-31c6-4c1a-b4c9-9a7d5e03d597
+2025-02-28 17:34:34 [http-nio-9095-exec-3] c.j.jwtauth.service.AuthService - Attempting login for user: JJbKJ
+2025-02-28 17:34:35 [http-nio-9095-exec-3] c.jwtauth.jwtauth.service.JWTService - Generating JWT token for user: JJbKJ
+2025-02-28 17:34:35 [http-nio-9095-exec-3] c.jwtauth.jwtauth.service.JWTService - JWT token generated successfully for user: JJbKJ
+2025-02-28 17:34:35 [http-nio-9095-exec-3] c.jwtauth.jwtauth.service.JWTService - Generating refresh token for user: JJbKJ
+2025-02-28 17:34:35 [http-nio-9095-exec-3] c.jwtauth.jwtauth.service.JWTService - Refresh token generated successfully for user: JJbKJ
+2025-02-28 17:34:35 [http-nio-9095-exec-3] c.j.jwtauth.service.AuthService - Token generated successfully for user: JJbKJ
+2025-02-28 17:34:35 [http-nio-9095-exec-3] c.j.j.controller.AuthController - Login successful for user: JJbKJ
+2025-02-28 17:34:35 [http-nio-9095-exec-3] global - Response Body: {"access_token":"*****","time":"2025-02-28T17:34:35.5275567","error":null,"message":"Token generated successfully","reToken":"eyJhbGciOiJIUzI1NiJ9.eyJyZWZlcmVuY2UiOiI3NjAyOTdiOC0zMWM2LTRjMWEtYjRjOS05YTdkNWUwM2Q1OTciLCJ1c2VybmFtZSI6IkpKYktKIiwic3ViIjoiSkpiS0oiLCJpYXQiOjE3NDA3NDQyNz
+2025-02-28 17:35:03 [http-nio-9095-exec-2] c.jwtauth.jwtauth.filter.JWTFilter - Authorization header is missing or does not start with Bearer
+2025-02-28 17:35:03 [http-nio-9095-exec-2] global - Incoming Request: POST /user-details/save
+2025-02-28 17:35:03 [http-nio-9095-exec-2] global - Header -> content-type : application/json
+2025-02-28 17:35:03 [http-nio-9095-exec-2] global - Header -> user-agent : PostmanRuntime/7.43.0
+2025-02-28 17:35:03 [http-nio-9095-exec-2] global - Header -> accept : */*
+2025-02-28 17:35:03 [http-nio-9095-exec-2] global - Header -> postman-token : 6c68f5e8-36de-4100-b8e7-05dbb600f036
+2025-02-28 17:35:03 [http-nio-9095-exec-2] global - Header -> host : localhost:9095
+2025-02-28 17:35:03 [http-nio-9095-exec-2] global - Header -> accept-encoding : gzip, deflate, br
+2025-02-28 17:35:03 [http-nio-9095-exec-2] global - Header -> connection : keep-alive
+2025-02-28 17:35:03 [http-nio-9095-exec-2] global - Header -> content-length : 139
+2025-02-28 17:35:03 [http-nio-9095-exec-2] global - Request Body: {
+    
+    "name": "fcvvc cv",
+    "age": 55,
+    "email": "v@sfvvdgmsdail.com",
+    "password": "*****"
+}
+
+2025-02-28 17:35:03 [http-nio-9095-exec-2] com.jwtauth.jwtauth.api - Calling external API to create user details: com.jwtauth.jwtauth.dto.UserRequestDTO@46d6be9a
+2025-02-28 17:35:03 [http-nio-9095-exec-2] API_LOG - POST request to URL: http://localhost:9094/users/save
+2025-02-28 17:35:03 [http-nio-9095-exec-2] global - Response Body: {"name":"fcvvc cv","age":55,"email":"v@sfvvdgmsdail.com","password":"*****"}
+2025-02-28 17:37:46 [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-02-28 17:37:46 [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-02-28 17:37:48 [SpringApplicationShutdownHook] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-02-28 17:37:48 [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-02-28 17:37:48 [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-02-28 17:37:51 [main] c.jwtauth.jwtauth.JwtauthApplication - Starting JwtauthApplication using Java 17.0.11 with PID 28944 (C:\Users\project\Desktop\Tasks\spring Jwt\jwtauth\jwtauth\target\classes started by project in C:\Users\project\Desktop\Tasks\spring Jwt\jwtauth\jwtauth)
+2025-02-28 17:37:51 [main] c.jwtauth.jwtauth.JwtauthApplication - No active profile set, falling back to 1 default profile: "default"
+2025-02-28 17:37:51 [main] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-02-28 17:37:51 [main] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 103 ms. Found 2 JPA repository interfaces.
+2025-02-28 17:37:52 [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 9095 (http)
+2025-02-28 17:37:52 [main] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-9095"]
+2025-02-28 17:37:52 [main] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-02-28 17:37:52 [main] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.34]
+2025-02-28 17:37:52 [main] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-02-28 17:37:52 [main] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 937 ms
+2025-02-28 17:37:52 [main] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-02-28 17:37:52 [main] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.5.Final
+2025-02-28 17:37:52 [main] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-02-28 17:37:52 [main] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-02-28 17:37:52 [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-02-28 17:37:52 [main] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@688d2a5d
+2025-02-28 17:37:52 [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-02-28 17:37:53 [main] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0.41
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-02-28 17:37:53 [main] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-02-28 17:37:53 [main] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-02-28 17:37:53 [main] global - SecurityConfig initialized with UserRepository and JWTFilter
+2025-02-28 17:37:53 [main] global - Initializing BCryptPasswordEncoder with strength 12
+2025-02-28 17:37:53 [main] global - Creating DaoAuthenticationProvider...
+2025-02-28 17:37:53 [main] global - Initializing custom UserDetailsService...
+2025-02-28 17:37:53 [main] global - DaoAuthenticationProvider initialized with custom UserDetailsService and PasswordEncoder
+2025-02-28 17:37:53 [main] o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2025-02-28 17:37:53 [main] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2025-02-28 17:37:54 [main] o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-02-28 17:37:54 [main] global - Configuring security filter chain...
+2025-02-28 17:37:54 [main] global - Setting session management to STATELESS
+2025-02-28 17:37:54 [main] global - Configuring endpoint access rules...
+2025-02-28 17:37:54 [main] o.s.s.c.a.w.c.AuthorizeHttpRequestsConfigurer$AuthorizationManagerRequestMatcherRegistry - One of the patterns in [/api/v1/auth/login, /api/v1/auth/register, /api/v1/auth/refresh, /api/v1/auth/logout, api/transactions/process, api/transactions/enc, api/transactions/dec, /user-details/save, /user-details/{userId}] is missing a leading slash. This is discouraged; please include the leading slash in all your request matcher patterns. In future versions of Spring Security, leaving out the leading slash will result in an exception.
+2025-02-28 17:37:54 [main] global - Public endpoints allowed: /api/v1/auth/login, /api/v1/auth/register
+2025-02-28 17:37:54 [main] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-9095"]
+2025-02-28 17:37:54 [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 9095 (http) with context path '/'
+2025-02-28 17:37:54 [main] c.jwtauth.jwtauth.JwtauthApplication - Started JwtauthApplication in 3.355 seconds (process running for 3.785)
+2025-02-28 17:37:57 [http-nio-9095-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-02-28 17:37:57 [http-nio-9095-exec-2] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-02-28 17:37:57 [http-nio-9095-exec-2] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-02-28 17:37:57 [http-nio-9095-exec-2] c.jwtauth.jwtauth.filter.JWTFilter - Authorization header is missing or does not start with Bearer
+2025-02-28 17:37:57 [http-nio-9095-exec-2] global - Incoming Request: POST /user-details/save
+2025-02-28 17:37:57 [http-nio-9095-exec-2] global - Header -> content-type : application/json
+2025-02-28 17:37:57 [http-nio-9095-exec-2] global - Header -> user-agent : PostmanRuntime/7.43.0
+2025-02-28 17:37:57 [http-nio-9095-exec-2] global - Header -> accept : */*
+2025-02-28 17:37:57 [http-nio-9095-exec-2] global - Header -> postman-token : b7fcafc7-ca1e-4b6f-841b-e2d2f142e9bb
+2025-02-28 17:37:57 [http-nio-9095-exec-2] global - Header -> host : localhost:9095
+2025-02-28 17:37:57 [http-nio-9095-exec-2] global - Header -> accept-encoding : gzip, deflate, br
+2025-02-28 17:37:57 [http-nio-9095-exec-2] global - Header -> connection : keep-alive
+2025-02-28 17:37:57 [http-nio-9095-exec-2] global - Header -> content-length : 139
+2025-02-28 17:37:57 [http-nio-9095-exec-2] global - Request Body: {
+    
+    "name": "fcvvc cv",
+    "age": 55,
+    "email": "v@sfvvdgmsdail.com",
+    "password": "*****"
+}
+
+2025-02-28 17:37:57 [http-nio-9095-exec-2] com.jwtauth.jwtauth.api - Calling external API to create user details: com.jwtauth.jwtauth.dto.UserRequestDTO@1b316d8b
+2025-02-28 17:37:57 [http-nio-9095-exec-2] API_LOG - POST request to URL: http://localhost:9094/users/save
+2025-02-28 17:37:57 [http-nio-9095-exec-2] global - Response Body: {"name":"fcvvc cv","age":55,"email":"v@sfvvdgmsdail.com","password":"*****"}
+2025-02-28 17:38:45 [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-02-28 17:38:45 [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-02-28 17:38:47 [SpringApplicationShutdownHook] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-02-28 17:38:47 [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-02-28 17:38:47 [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-02-28 17:38:49 [main] c.jwtauth.jwtauth.JwtauthApplication - Starting JwtauthApplication using Java 17.0.11 with PID 20572 (C:\Users\project\Desktop\Tasks\spring Jwt\jwtauth\jwtauth\target\classes started by project in C:\Users\project\Desktop\Tasks\spring Jwt\jwtauth\jwtauth)
+2025-02-28 17:38:49 [main] c.jwtauth.jwtauth.JwtauthApplication - No active profile set, falling back to 1 default profile: "default"
+2025-02-28 17:38:49 [main] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-02-28 17:38:49 [main] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 103 ms. Found 2 JPA repository interfaces.
+2025-02-28 17:38:50 [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 9095 (http)
+2025-02-28 17:38:50 [main] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-9095"]
+2025-02-28 17:38:50 [main] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-02-28 17:38:50 [main] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.34]
+2025-02-28 17:38:50 [main] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-02-28 17:38:50 [main] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 935 ms
+2025-02-28 17:38:50 [main] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-02-28 17:38:50 [main] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.5.Final
+2025-02-28 17:38:50 [main] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-02-28 17:38:50 [main] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-02-28 17:38:50 [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-02-28 17:38:50 [main] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@2507a170
+2025-02-28 17:38:50 [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-02-28 17:38:50 [main] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0.41
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-02-28 17:38:51 [main] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-02-28 17:38:51 [main] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-02-28 17:38:51 [main] global - SecurityConfig initialized with UserRepository and JWTFilter
+2025-02-28 17:38:51 [main] global - Initializing BCryptPasswordEncoder with strength 12
+2025-02-28 17:38:51 [main] global - Creating DaoAuthenticationProvider...
+2025-02-28 17:38:51 [main] global - Initializing custom UserDetailsService...
+2025-02-28 17:38:51 [main] global - DaoAuthenticationProvider initialized with custom UserDetailsService and PasswordEncoder
+2025-02-28 17:38:51 [main] o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2025-02-28 17:38:51 [main] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2025-02-28 17:38:51 [main] o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-02-28 17:38:51 [main] global - Configuring security filter chain...
+2025-02-28 17:38:51 [main] global - Setting session management to STATELESS
+2025-02-28 17:38:51 [main] global - Configuring endpoint access rules...
+2025-02-28 17:38:51 [main] o.s.s.c.a.w.c.AuthorizeHttpRequestsConfigurer$AuthorizationManagerRequestMatcherRegistry - One of the patterns in [/api/v1/auth/login, /api/v1/auth/register, /api/v1/auth/refresh, /api/v1/auth/logout, api/transactions/process, api/transactions/enc, api/transactions/dec, /user-details/save, /user-details/{userId}] is missing a leading slash. This is discouraged; please include the leading slash in all your request matcher patterns. In future versions of Spring Security, leaving out the leading slash will result in an exception.
+2025-02-28 17:38:51 [main] global - Public endpoints allowed: /api/v1/auth/login, /api/v1/auth/register
+2025-02-28 17:38:52 [main] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-9095"]
+2025-02-28 17:38:52 [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 9095 (http) with context path '/'
+2025-02-28 17:38:52 [main] c.jwtauth.jwtauth.JwtauthApplication - Started JwtauthApplication in 3.353 seconds (process running for 3.79)
+2025-02-28 17:38:54 [http-nio-9095-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-02-28 17:38:54 [http-nio-9095-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-02-28 17:38:54 [http-nio-9095-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-02-28 17:38:54 [http-nio-9095-exec-1] c.jwtauth.jwtauth.filter.JWTFilter - Authorization header is missing or does not start with Bearer
+2025-02-28 17:38:54 [http-nio-9095-exec-1] global - Incoming Request: POST /user-details/save
+2025-02-28 17:38:54 [http-nio-9095-exec-1] global - Header -> content-type : application/json
+2025-02-28 17:38:54 [http-nio-9095-exec-1] global - Header -> user-agent : PostmanRuntime/7.43.0
+2025-02-28 17:38:54 [http-nio-9095-exec-1] global - Header -> accept : */*
+2025-02-28 17:38:54 [http-nio-9095-exec-1] global - Header -> postman-token : 65e02179-3b54-4b98-aeb2-95332c7f76da
+2025-02-28 17:38:54 [http-nio-9095-exec-1] global - Header -> host : localhost:9095
+2025-02-28 17:38:54 [http-nio-9095-exec-1] global - Header -> accept-encoding : gzip, deflate, br
+2025-02-28 17:38:54 [http-nio-9095-exec-1] global - Header -> connection : keep-alive
+2025-02-28 17:38:54 [http-nio-9095-exec-1] global - Header -> content-length : 139
+2025-02-28 17:38:54 [http-nio-9095-exec-1] global - Request Body: {
+    
+    "name": "fcvvc cv",
+    "age": 55,
+    "email": "v@sfvvdgmsdail.com",
+    "password": "*****"
+}
+
+2025-02-28 17:38:54 [http-nio-9095-exec-1] com.jwtauth.jwtauth.api - Calling external API to create user details: com.jwtauth.jwtauth.dto.UserRequestDTO@723ab31a
+2025-02-28 17:38:54 [http-nio-9095-exec-1] API_LOG - POST request to URL: http://localhost:9094/users/save
+2025-02-28 17:38:54 [http-nio-9095-exec-1] global - Response Body: {"name":"fcvvc cv","age":55,"email":"v@sfvvdgmsdail.com","password":"*****"}
+2025-02-28 17:39:13 [http-nio-9095-exec-3] c.jwtauth.jwtauth.filter.JWTFilter - Extracted JWT Token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhc2VsYSIsImlhdCI6MTczOTk1OTc5OCwiZXhwIjoxNzM5OTYwNjk4fQ.3UpveJ4O8BjD9TtMWPT22WcXDX9qdEe7sNpWqcKMpiM
+2025-02-28 17:39:13 [http-nio-9095-exec-3] c.jwtauth.jwtauth.service.JWTService - Error parsing or validating token
+io.jsonwebtoken.security.SignatureException: JWT signature does not match locally computed signature. JWT validity cannot be asserted and should not be trusted.
+	at io.jsonwebtoken.impl.DefaultJwtParser.verifySignature(DefaultJwtParser.java:340)
+	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:579)
+	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:364)
+	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:94)
+	at io.jsonwebtoken.impl.io.AbstractParser.parse(AbstractParser.java:36)
+	at io.jsonwebtoken.impl.io.AbstractParser.parse(AbstractParser.java:29)
+	at io.jsonwebtoken.impl.DefaultJwtParser.parseSignedClaims(DefaultJwtParser.java:830)
+	at com.jwtauth.jwtauth.service.JWTService.getTokenData(JWTService.java:100)
+	at com.jwtauth.jwtauth.service.JWTService.getUserName(JWTService.java:78)
+	at com.jwtauth.jwtauth.filter.JWTFilter.doFilterInternal(JWTFilter.java:59)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$3(HandlerMappingIntrospector.java:243)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:238)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:362)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:278)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:397)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:905)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+2025-02-28 17:39:13 [http-nio-9095-exec-3] c.jwtauth.jwtauth.filter.JWTFilter - User from JWT: null
+2025-02-28 17:39:13 [http-nio-9095-exec-3] c.jwtauth.jwtauth.filter.JWTFilter - Username extracted from JWT is null
+2025-02-28 17:39:13 [http-nio-9095-exec-3] global - Incoming Request: POST /api/v1/auth/login
+2025-02-28 17:39:13 [http-nio-9095-exec-3] global - Header -> content-type : application/json
+2025-02-28 17:39:13 [http-nio-9095-exec-3] global - Header -> authorization : Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhc2VsYSIsImlhdCI6MTczOTk1OTc5OCwiZXhwIjoxNzM5OTYwNjk4fQ.3UpveJ4O8BjD9TtMWPT22WcXDX9qdEe7sNpWqcKMpiM
+2025-02-28 17:39:13 [http-nio-9095-exec-3] global - Header -> user-agent : PostmanRuntime/7.43.0
+2025-02-28 17:39:13 [http-nio-9095-exec-3] global - Header -> accept : */*
+2025-02-28 17:39:13 [http-nio-9095-exec-3] global - Header -> postman-token : 9e62550a-b90c-4af2-8d75-31a1efe390f9
+2025-02-28 17:39:13 [http-nio-9095-exec-3] global - Header -> host : localhost:9095
+2025-02-28 17:39:13 [http-nio-9095-exec-3] global - Header -> accept-encoding : gzip, deflate, br
+2025-02-28 17:39:13 [http-nio-9095-exec-3] global - Header -> connection : keep-alive
+2025-02-28 17:39:13 [http-nio-9095-exec-3] global - Header -> content-length : 116
+2025-02-28 17:39:13 [http-nio-9095-exec-3] global - Request Body: {
+    "username": "*****",
+    "email": "ddddddsddbsdd@fggfgfddff.com",
+    "password": "*****"
+}  
+
+2025-02-28 17:39:13 [http-nio-9095-exec-3] c.j.j.controller.AuthController - Login attempt for user: JJbKJ
+2025-02-28 17:39:13 [http-nio-9095-exec-3] c.j.jwtauth.service.AuthService - ref: 28dc444f-afe2-41b5-adcc-3e0e25fc7cbc
+2025-02-28 17:39:13 [http-nio-9095-exec-3] c.j.jwtauth.service.AuthService - Attempting login for user: JJbKJ
+2025-02-28 17:39:14 [http-nio-9095-exec-3] c.jwtauth.jwtauth.service.JWTService - Generating JWT token for user: JJbKJ
+2025-02-28 17:39:14 [http-nio-9095-exec-3] c.jwtauth.jwtauth.service.JWTService - JWT token generated successfully for user: JJbKJ
+2025-02-28 17:39:14 [http-nio-9095-exec-3] c.jwtauth.jwtauth.service.JWTService - Generating refresh token for user: JJbKJ
+2025-02-28 17:39:14 [http-nio-9095-exec-3] c.jwtauth.jwtauth.service.JWTService - Refresh token generated successfully for user: JJbKJ
+2025-02-28 17:39:14 [http-nio-9095-exec-3] c.j.jwtauth.service.AuthService - Token generated successfully for user: JJbKJ
+2025-02-28 17:39:14 [http-nio-9095-exec-3] c.j.j.controller.AuthController - Login successful for user: JJbKJ
+2025-02-28 17:39:14 [http-nio-9095-exec-3] global - Response Body: {"access_token":"*****","time":"2025-02-28T17:39:14.2327909","error":null,"message":"Token generated successfully","reToken":"eyJhbGciOiJIUzI1NiJ9.eyJyZWZlcmVuY2UiOiIyOGRjNDQ0Zi1hZmUyLTQxYjUtYWRjYy0zZTBlMjVmYzdjYmMiLCJ1c2VybmFtZSI6IkpKYktKIiwic3ViIjoiSkpiS0oiLCJpYXQiOjE3NDA3NDQ1NT
