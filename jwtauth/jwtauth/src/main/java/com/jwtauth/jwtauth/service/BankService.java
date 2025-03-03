@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class BankService {
 
-    private static final Logger logger = LoggerFactory.getLogger(BankService.class);
+    private static final Logger logger = LoggerFactory.getLogger("API_LOG");
 
     private final ApiConnector apiConnector;
     private final ObjectMapper objectMapper;
@@ -21,28 +21,33 @@ public class BankService {
     }
 
     public UserRequestDTO getUserDetailsFromBank(Long userId) {
+        logger.info("Fetching user details from bank for userId: {}", userId);
         return callApi(() -> apiConnector.geCoreBank("users/" + userId));
     }
 
     public UserRequestDTO createUserDetailsFromBank(UserRequestDTO requestBody) {
-//        return callApi(() -> apiConnector.createCoreBank("users/" , toJson(requestBody)));
-        return callApi(() -> apiConnector.createCoreBank("users/save" , requestBody));
+        logger.info("Creating user details in bank with request body: {}", toJson(requestBody));
+        return callApi(() -> apiConnector.createCoreBank("users/save", requestBody));
     }
 
     public UserRequestDTO updateUserDetailsFromBank(Long userId, Object requestBody) {
+        logger.info("Updating user details in bank for userId: {} with request body: {}", userId, toJson(requestBody));
         return callApi(() -> apiConnector.updateCoreBank("users/" + userId, toJson(requestBody)));
     }
 
     public UserRequestDTO deleteUserDetailsFromBank(Long userId) {
+        logger.info("Deleting user details from bank for userId: {}", userId);
         return callApi(() -> apiConnector.deleteCoreBank("users/" + userId));
     }
 
     private UserRequestDTO callApi(ApiCall apiCall) {
         try {
+            logger.debug("Calling external API...");
             String response = apiCall.execute();
+            logger.debug("API response: {}", response);
             return (response == null || response.isEmpty()) ? null : objectMapper.readValue(response, UserRequestDTO.class);
         } catch (JsonProcessingException e) {
-            logger.error("Error processing JSON: {}", e.getMessage());
+            logger.error("Error processing JSON: {}", e.getMessage(), e);
             return null;
         }
     }
@@ -51,7 +56,7 @@ public class BankService {
         try {
             return objectMapper.writeValueAsString(requestBody);
         } catch (JsonProcessingException e) {
-            logger.error("Error serializing request body: {}", e.getMessage());
+            logger.error("Error serializing request body: {}", e.getMessage(), e);
             return "{}"; // Return an empty JSON object to avoid breaking the API call
         }
     }
@@ -61,4 +66,3 @@ public class BankService {
         String execute() throws JsonProcessingException;
     }
 }
-

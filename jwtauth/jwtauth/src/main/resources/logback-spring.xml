@@ -11,6 +11,7 @@
                 <maskPattern>\"reToken\"\s*:\s*\"(.*?)\"</maskPattern>
                 <maskPattern>\"refreshToken\"\s*:\s*\"(.*?)\"</maskPattern>
                 <maskPattern>\"accountNo\"\s*:\s*\"(.*?)\"</maskPattern>
+                <maskPattern>\"number\"\s*:\s*\"(.*?)\"</maskPattern>
                 <maskPattern>\"nic\"\s*:\s*\"(.*?)\"</maskPattern>
                 <maskPattern>\"accessToken\"\s*:\s*\"(.*?)\"</maskPattern>
                 <maskPattern>\"account\"\s*:\s*\"(.*?)\"</maskPattern>
@@ -30,6 +31,7 @@
                 <maskPattern>\"reToken\"\s*:\s*\"(.*?)\"</maskPattern>
                 <maskPattern>\"refreshToken\"\s*:\s*\"(.*?)\"</maskPattern>
                 <maskPattern>\"accountNo\"\s*:\s*\"(.*?)\"</maskPattern>
+                <maskPattern>\"number\"\s*:\s*\"(.*?)\"</maskPattern>
                 <maskPattern>\"nic\"\s*:\s*\"(.*?)\"</maskPattern>
                 <maskPattern>\"accessToken\"\s*:\s*\"(.*?)\"</maskPattern>
                 <maskPattern>\"account\"\s*:\s*\"(.*?)\"</maskPattern>

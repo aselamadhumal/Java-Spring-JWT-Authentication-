@@ -13,7 +13,7 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 //@Slf4j(topic = "API_LOG")
 public class ApiConnector {
 
-//    private static final Logger logger = LoggerFactory.getLogger(ApiConnector.class);
+//  private static final Logger logger = LoggerFactory.getLogger(ApiConnector.class);
     private static final Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger("API_LOG");
 
     @Value("${core.bank.base.url}")
