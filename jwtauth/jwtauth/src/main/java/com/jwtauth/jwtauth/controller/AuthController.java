@@ -5,10 +5,12 @@ import com.jwtauth.jwtauth.model.UserEntity;
 import com.jwtauth.jwtauth.repository.UserRepository;
 import com.jwtauth.jwtauth.service.AuthService;
 import com.jwtauth.jwtauth.service.JWTService;
+import com.jwtauth.jwtauth.service.UserPaginationService;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,13 +25,15 @@ public class AuthController {
     private final AuthService authService;
     private final JWTService jwtService;
     private final UserRepository userRepository;
+    private final UserPaginationService userPaginationService;
 
 
     // Fixed: Single constructor with proper field initialization
-    public AuthController(AuthService authService, JWTService jwtService, UserRepository userRepository) {
+    public AuthController(AuthService authService, JWTService jwtService, UserRepository userRepository, UserPaginationService userPaginationService) {
         this.authService = authService;
         this.jwtService = jwtService;
         this.userRepository = userRepository;
+        this.userPaginationService = userPaginationService;
     }
 
     @GetMapping("/list")
@@ -176,6 +180,36 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+
+    @GetMapping("/{field}")
+    public APIResponseDTO<List<UserEntity>> getUsersWithSort(@PathVariable String field) {
+        List<UserEntity> allUsers = userPaginationService.findUserWithSorting(field);
+        return new APIResponseDTO<>(allUsers.size(), allUsers);
+    }
+
+    @GetMapping("/pagination")
+    public APIResponseDTO<Page<UserEntity>> getUsersWithPagination(
+            @RequestParam String offset,
+            @RequestParam String pageSize) {
+        int of = Integer.parseInt(offset);
+        int page = Integer.parseInt(pageSize);
+        logger.info("Pagination request received - Offset: {}, PageSize: {}", of, page);
+        Page<UserEntity> usersWithPagination = userPaginationService.findUsersWithPagination(of, page);
+        logger.info("Pagination response - Total elements in current page: {}, Total elements overall: {}",
+                usersWithPagination.getNumberOfElements(),
+                usersWithPagination.getTotalElements());
+        return new APIResponseDTO<>(usersWithPagination.getNumberOfElements(), usersWithPagination);
+    }
+
+    @GetMapping("/paginationAndSort/{offset}/{pageSize}/{field}")
+    public APIResponseDTO<Page<UserEntity>> getUsersWithPaginationAndSort(@PathVariable int offset, @PathVariable int pageSize, @PathVariable String field) {
+        Page<UserEntity> usersWithPagination = userPaginationService.findUsersWithPaginationAndSorting(offset, pageSize, field);
+        return new APIResponseDTO<>(usersWithPagination.getNumberOfElements(), usersWithPagination);
+    }
+
+
+
+
 
 
 

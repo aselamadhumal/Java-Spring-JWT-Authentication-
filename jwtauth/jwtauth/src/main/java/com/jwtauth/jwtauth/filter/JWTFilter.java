@@ -56,10 +56,6 @@ public class JWTFilter extends OncePerRequestFilter {
             return;
         }*/
 
-
-
-
-
         String username = jwtService.getUserName(jwtToken);
         logger.info("User from JWT: {}", username);
 
@@ -117,9 +113,6 @@ public class JWTFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
         logger.info("Filter chain continued for user: {}", userDetails.getUsername());
-
-
-
 
     }
 }
