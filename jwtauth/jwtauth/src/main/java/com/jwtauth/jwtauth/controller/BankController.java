@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/user-details")
 public class BankController {
 
-    private static final Logger apiLogger = LoggerFactory.getLogger("com.jwtauth.jwtauth.api");
-    private static final Logger logger = LoggerFactory.getLogger(BankController.class);
+    private static final Logger logger = LoggerFactory.getLogger("API_LOG");
 
     private final BankService bankService;
 
@@ -24,28 +23,28 @@ public class BankController {
     @GetMapping("/{userId}")
     public ResponseEntity<UserRequestDTO> getUserDetails(@PathVariable Long userId) {
         // Log API call here
-        apiLogger.info("Calling external API to fetch user details for userId: {}", userId);
+        logger.info("Calling external API to fetch user details for userId: {}", userId);
         return handleResponse(() -> bankService.getUserDetailsFromBank(userId));
     }
 
     @PostMapping("/save")
     public ResponseEntity<UserRequestDTO> createUserDetails(@RequestBody UserRequestDTO requestBody) {
         // Log API call here
-        apiLogger.info("Calling external API to create user details: {}", requestBody);
+        logger.info("Calling external API to create user details: {}", requestBody);
         return handleResponse(() -> bankService.createUserDetailsFromBank(requestBody));
     }
 
     @PutMapping("/{userId}")
     public ResponseEntity<UserRequestDTO> updateUserDetails(@PathVariable Long userId, @RequestBody Object requestBody) {
         // Log API call here
-        apiLogger.info("Calling external API to update user details for userId: {}", userId);
+        logger.info("Calling external API to update user details for userId: {}", userId);
         return handleResponse(() -> bankService.updateUserDetailsFromBank(userId, requestBody));
     }
 
     @DeleteMapping("/{userId}")
     public ResponseEntity<UserRequestDTO> deleteUserDetails(@PathVariable Long userId) {
         // Log API call here
-        apiLogger.info("Calling external API to delete user details for userId: {}", userId);
+        logger.info("Calling external API to delete user details for userId: {}", userId);
         return handleResponse(() -> bankService.deleteUserDetailsFromBank(userId));
     }
 
