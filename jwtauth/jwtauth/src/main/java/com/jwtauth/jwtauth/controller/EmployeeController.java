@@ -5,8 +5,12 @@ import com.jwtauth.jwtauth.dto.EmployeeResponseDTO;
 import com.jwtauth.jwtauth.model.EmployeeEntity;
 import com.jwtauth.jwtauth.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -44,5 +48,23 @@ public class EmployeeController {
 
         List<EmployeeResponseDTO> response = employeeService.searchEmployees(name, department, salary);
         return ResponseEntity.ok(response);
+    }
+
+    // Get PDF for Employee
+    @GetMapping("/employee/{id}/pdf")
+    public ResponseEntity<byte[]> getEmployeePdf(@PathVariable Long id) {
+        try {
+            // Generate the PDF for the given employee ID
+            byte[] pdfContents = employeeService.generateEmployeePdf(id).toByteArray();
+
+            // Set headers for the PDF file download
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Content-Disposition", "inline; filename=employee_" + id + "_details.pdf");
+            headers.add("Content-Type", "application/pdf");
+
+            return new ResponseEntity<>(pdfContents, headers, HttpStatus.OK);
+        } catch (IOException | RuntimeException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

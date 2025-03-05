@@ -1,13 +1,18 @@
 package com.jwtauth.jwtauth.service;
 
+import com.itextpdf.text.DocumentException;
+import com.jwtauth.jwtauth.dto.EmployeePdfDTO;
 import com.jwtauth.jwtauth.dto.EmployeeResponseDTO;
 import com.jwtauth.jwtauth.model.EmployeeEntity;
 import com.jwtauth.jwtauth.repository.EmployeeRepository;
+import com.jwtauth.jwtauth.utils.PDFGenerator;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,6 +93,37 @@ public class EmployeeService {
             ));
         }
 
+
         return responseDTOs;
     }
+
+    public EmployeePdfDTO convertToEmployeePdfDTO(EmployeeEntity employeeEntity) {
+        return new EmployeePdfDTO(
+                employeeEntity.getId(),
+                employeeEntity.getName(),
+                employeeEntity.getDepartment(),
+                employeeEntity.getSalary()
+        );
+    }
+    // Generate PDF for Employee
+    public ByteArrayOutputStream generateEmployeePdf(Long employeeId) throws IOException {
+        try {
+            // Fetch employee by ID
+            EmployeeEntity employee = employeeRepository.findById(employeeId)
+                    .orElseThrow(() -> new RuntimeException("Employee not found"));
+
+            // Convert EmployeeEntity to EmployeePdfDTO
+            EmployeePdfDTO employeePdfDTO = convertToEmployeePdfDTO(employee);
+
+            return PDFGenerator.generateEmployeePdf(employeePdfDTO);
+        } catch (IOException | DocumentException e) {
+            throw new RuntimeException("Error generating PDF: " + e.getMessage());
+        }
+    }
+
+
+
+
+
+
 }
