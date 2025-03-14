@@ -1,5 +1,7 @@
 package com.jwtauth.jwtauth.service;
 
+import com.jwtauth.jwtauth.handler.AuditLogHandler;
+import com.jwtauth.jwtauth.handler.PaymentValidatorHandler;
 import org.springframework.stereotype.Service;
 import com.jwtauth.jwtauth.handler.InventoryHandler;
 import com.jwtauth.jwtauth.handler.OrderHandler;
@@ -14,11 +16,20 @@ public class OrderProcessingService {
 
     private final OrderHandler orderHandler;
     private final InventoryHandler inventoryHandler;
+    private final AuditLogHandler auditLogHandler;
+    private final PaymentValidatorHandler paymentValidatorHandler;
 
-    public OrderProcessingService(OrderHandler orderHandler, InventoryHandler inventoryHandler) {
+
+    public OrderProcessingService(OrderHandler orderHandler, InventoryHandler inventoryHandler,AuditLogHandler auditLogHandler, PaymentValidatorHandler paymentValidatorHandler) {
         this.orderHandler = orderHandler;
         this.inventoryHandler = inventoryHandler;
+        this.auditLogHandler =  auditLogHandler;
+        this.paymentValidatorHandler = paymentValidatorHandler;
     }
+
+    // REQUIRED : join an existing transaction or create a new one if not exist
+    // REQUIRES_NEW : Always create a new transaction , suspending if any existing transaction
+    // MANDATORY : Require an existing transaction , if nothing found it will throw exception
 
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT)
     public OrderEntity placeOrder(OrderEntity order) {
@@ -34,8 +45,18 @@ public class OrderProcessingService {
         // save order
         OrderEntity saveOrder = orderHandler.saveOrder(order);
 
-        // update stock in inventory
-        updateInventoryStock(order, product);
+        try {
+            // update stock in inventory
+            updateInventoryStock(order, product);
+            auditLogHandler.logAuditDetails(order, "order placement successful");
+        }catch (Exception e) {
+            //required new
+            auditLogHandler.logAuditDetails(order, "order placement failed");
+        }
+        //validatepayment();
+        paymentValidatorHandler.validatePayment(order);
+
+
 
         return saveOrder;
     }
