@@ -10370,3 +10370,166 @@ Caused by: java.sql.SQLIntegrityConstraintViolationException: Column 'email' can
 2025-03-18 17:34:38 [SpringApplicationShutdownHook] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
 2025-03-18 17:34:38 [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
 2025-03-18 17:34:38 [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-03-18 17:34:42 [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 7.0.1.Final
+2025-03-18 17:34:42 [main] c.jwtauth.jwtauth.JwtauthApplication - Starting JwtauthApplication using Java 17.0.11 with PID 7964 (C:\Users\project\Desktop\Tasks\spring Jwt\jwtauth\jwtauth\target\classes started by project in C:\Users\project\Desktop\Tasks\spring Jwt\jwtauth\jwtauth)
+2025-03-18 17:34:42 [main] c.jwtauth.jwtauth.JwtauthApplication - No active profile set, falling back to 1 default profile: "default"
+2025-03-18 17:34:43 [main] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-03-18 17:34:43 [main] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 167 ms. Found 6 JPA repository interfaces.
+2025-03-18 17:34:44 [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 9098 (http)
+2025-03-18 17:34:44 [main] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-9098"]
+2025-03-18 17:34:44 [main] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-03-18 17:34:44 [main] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.34]
+2025-03-18 17:34:44 [main] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-03-18 17:34:44 [main] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1558 ms
+2025-03-18 17:34:44 [main] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-03-18 17:34:44 [main] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.5.Final
+2025-03-18 17:34:44 [main] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-03-18 17:34:44 [main] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-03-18 17:34:44 [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-03-18 17:34:45 [main] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@53432aef
+2025-03-18 17:34:45 [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-03-18 17:34:45 [main] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0.41
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-03-18 17:34:46 [main] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-03-18 17:34:46 [main] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-03-18 17:34:46 [main] global - SecurityConfig initialized with UserRepository and JWTFilter
+2025-03-18 17:34:46 [main] global - Initializing BCryptPasswordEncoder with strength 12
+2025-03-18 17:34:46 [main] global - Creating DaoAuthenticationProvider...
+2025-03-18 17:34:46 [main] global - Initializing custom UserDetailsService...
+2025-03-18 17:34:46 [main] global - DaoAuthenticationProvider initialized with custom UserDetailsService and PasswordEncoder
+2025-03-18 17:34:46 [main] o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2025-03-18 17:34:46 [main] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2025-03-18 17:34:46 [main] o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-03-18 17:34:47 [main] global - Configuring security filter chain...
+2025-03-18 17:34:47 [main] global - Setting session management to STATELESS
+2025-03-18 17:34:47 [main] global - Configuring endpoint access rules...
+2025-03-18 17:34:47 [main] o.s.s.c.a.w.c.AuthorizeHttpRequestsConfigurer$AuthorizationManagerRequestMatcherRegistry - One of the patterns in [/api/v1/auth/login, /api/v1/auth/register, /api/v1/auth/refresh, /api/v1/auth/logout, api/transactions/process, api/transactions/enc, api/transactions/dec, /user-details/save, /user-details/{userId}, /api/employees/register, /api/orders] is missing a leading slash. This is discouraged; please include the leading slash in all your request matcher patterns. In future versions of Spring Security, leaving out the leading slash will result in an exception.
+2025-03-18 17:34:47 [main] global - Public endpoints allowed: /api/v1/auth/login, /api/v1/auth/register
+2025-03-18 17:34:47 [main] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-9098"]
+2025-03-18 17:34:47 [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 9098 (http) with context path '/'
+2025-03-18 17:34:47 [main] c.jwtauth.jwtauth.JwtauthApplication - Started JwtauthApplication in 5.731 seconds (process running for 6.408)
+2025-03-18 17:34:55 [http-nio-9098-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-03-18 17:34:55 [http-nio-9098-exec-2] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-03-18 17:34:55 [http-nio-9098-exec-2] o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2025-03-18 17:34:55 [http-nio-9098-exec-2] c.jwtauth.jwtauth.filter.JWTFilter - Authorization header is missing or does not start with Bearer
+2025-03-18 17:34:55 [http-nio-9098-exec-2] global - Incoming Request: POST /api/v1/auth/register
+2025-03-18 17:34:55 [http-nio-9098-exec-2] global - Header -> content-type : application/json
+2025-03-18 17:34:55 [http-nio-9098-exec-2] global - Header -> user-agent : PostmanRuntime/7.43.2
+2025-03-18 17:34:55 [http-nio-9098-exec-2] global - Header -> accept : */*
+2025-03-18 17:34:55 [http-nio-9098-exec-2] global - Header -> postman-token : 274aed02-42b1-4b9d-9ad8-79a8cd68f09f
+2025-03-18 17:34:55 [http-nio-9098-exec-2] global - Header -> host : localhost:9098
+2025-03-18 17:34:55 [http-nio-9098-exec-2] global - Header -> accept-encoding : gzip, deflate, br
+2025-03-18 17:34:55 [http-nio-9098-exec-2] global - Header -> connection : keep-alive
+2025-03-18 17:34:55 [http-nio-9098-exec-2] global - Header -> content-length : 151
+2025-03-18 17:34:55 [http-nio-9098-exec-2] com.jwtauth.jwtauth.utils.EmailUtil - isUniqueEmail-> email: am.d.ddsk@gmgdsghgdkkail.com verified
+2025-03-18 17:34:55 [http-nio-9098-exec-2] c.j.j.controller.AuthController - Registration attempt for user: dssfgddsgfddvjfjjddjgdssg
+2025-03-18 17:34:55 [http-nio-9098-exec-2] c.j.jwtauth.service.AuthService - Registering user with username: dssfgddsgfddvjfjjddjgdssg
+2025-03-18 17:34:55 [http-nio-9098-exec-2] c.j.jwtauth.service.AuthService - Is user 'dssfgddsgfddvjfjjddjgdssg' enabled: false
+2025-03-18 17:34:55 [http-nio-9098-exec-2] c.j.jwtauth.service.AuthService - Creating user with username: dssfgddsgfddvjfjjddjgdssg
+2025-03-18 17:34:56 [http-nio-9098-exec-2] o.s.orm.jpa.JpaTransactionManager - Found thread-bound EntityManager [SessionImpl(567568539<open>)] for JPA transaction
+2025-03-18 17:34:56 [http-nio-9098-exec-2] o.s.orm.jpa.JpaTransactionManager - Creating new transaction with name [org.springframework.data.jpa.repository.support.SimpleJpaRepository.save]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-03-18 17:34:56 [http-nio-9098-exec-2] o.s.orm.jpa.JpaTransactionManager - Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@70897365]
+2025-03-18 17:34:56 [http-nio-9098-exec-2] o.s.orm.jpa.JpaTransactionManager - Initiating transaction commit
+2025-03-18 17:34:56 [http-nio-9098-exec-2] o.s.orm.jpa.JpaTransactionManager - Committing JPA transaction on EntityManager [SessionImpl(567568539<open>)]
+2025-03-18 17:34:56 [http-nio-9098-exec-2] o.s.orm.jpa.JpaTransactionManager - Not closing pre-bound JPA EntityManager after transaction
+2025-03-18 17:34:56 [http-nio-9098-exec-2] c.j.jwtauth.service.AuthService - User created with ID: 40
+2025-03-18 17:34:56 [http-nio-9098-exec-2] c.j.jwtauth.service.AuthService - User registered successfully with ID: 40
+2025-03-18 17:34:56 [http-nio-9098-exec-2] c.j.j.controller.AuthController - Registration successful for user: dssfgddsgfddvjfjjddjgdssg
+2025-03-18 17:34:56 [http-nio-9098-exec-2] global - Response Body: {"error":"User registered with ID 40","message":null}
+2025-03-18 17:35:05 [http-nio-9098-exec-3] c.jwtauth.jwtauth.filter.JWTFilter - Authorization header is missing or does not start with Bearer
+2025-03-18 17:35:05 [http-nio-9098-exec-3] global - Incoming Request: POST /api/v1/auth/register
+2025-03-18 17:35:05 [http-nio-9098-exec-3] global - Header -> content-type : application/json
+2025-03-18 17:35:05 [http-nio-9098-exec-3] global - Header -> user-agent : PostmanRuntime/7.43.2
+2025-03-18 17:35:05 [http-nio-9098-exec-3] global - Header -> accept : */*
+2025-03-18 17:35:05 [http-nio-9098-exec-3] global - Header -> postman-token : e064d3e8-7f68-4b60-88b7-aa5101e04077
+2025-03-18 17:35:05 [http-nio-9098-exec-3] global - Header -> host : localhost:9098
+2025-03-18 17:35:05 [http-nio-9098-exec-3] global - Header -> accept-encoding : gzip, deflate, br
+2025-03-18 17:35:05 [http-nio-9098-exec-3] global - Header -> connection : keep-alive
+2025-03-18 17:35:05 [http-nio-9098-exec-3] global - Header -> content-length : 154
+2025-03-18 17:35:05 [http-nio-9098-exec-3] com.jwtauth.jwtauth.utils.EmailUtil - isUniqueEmail-> email: am.d.ddsk@gmgdsghg..dkkail.com verified
+2025-03-18 17:35:05 [http-nio-9098-exec-3] c.j.j.controller.AuthController - Registration attempt for user: dssfgddsgfddvjhfjjddjgdssg
+2025-03-18 17:35:05 [http-nio-9098-exec-3] c.j.jwtauth.service.AuthService - Registering user with username: dssfgddsgfddvjhfjjddjgdssg
+2025-03-18 17:35:05 [http-nio-9098-exec-3] c.j.jwtauth.service.AuthService - Is user 'dssfgddsgfddvjhfjjddjgdssg' enabled: false
+2025-03-18 17:35:05 [http-nio-9098-exec-3] c.j.jwtauth.service.AuthService - Creating user with username: dssfgddsgfddvjhfjjddjgdssg
+2025-03-18 17:35:05 [http-nio-9098-exec-3] o.s.orm.jpa.JpaTransactionManager - Found thread-bound EntityManager [SessionImpl(2025686142<open>)] for JPA transaction
+2025-03-18 17:35:05 [http-nio-9098-exec-3] o.s.orm.jpa.JpaTransactionManager - Creating new transaction with name [org.springframework.data.jpa.repository.support.SimpleJpaRepository.save]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-03-18 17:35:05 [http-nio-9098-exec-3] o.s.orm.jpa.JpaTransactionManager - Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@5cdfe9d]
+2025-03-18 17:35:05 [http-nio-9098-exec-3] o.s.orm.jpa.JpaTransactionManager - Initiating transaction commit
+2025-03-18 17:35:05 [http-nio-9098-exec-3] o.s.orm.jpa.JpaTransactionManager - Committing JPA transaction on EntityManager [SessionImpl(2025686142<open>)]
+2025-03-18 17:35:05 [http-nio-9098-exec-3] o.s.orm.jpa.JpaTransactionManager - Not closing pre-bound JPA EntityManager after transaction
+2025-03-18 17:35:05 [http-nio-9098-exec-3] c.j.jwtauth.service.AuthService - User created with ID: 41
+2025-03-18 17:35:05 [http-nio-9098-exec-3] c.j.jwtauth.service.AuthService - User registered successfully with ID: 41
+2025-03-18 17:35:05 [http-nio-9098-exec-3] c.j.j.controller.AuthController - Registration successful for user: dssfgddsgfddvjhfjjddjgdssg
+2025-03-18 17:35:05 [http-nio-9098-exec-3] global - Response Body: {"error":"User registered with ID 41","message":null}
+2025-03-18 17:35:44 [http-nio-9098-exec-4] c.jwtauth.jwtauth.filter.JWTFilter - Authorization header is missing or does not start with Bearer
+2025-03-18 17:35:44 [http-nio-9098-exec-4] global - Incoming Request: POST /api/v1/auth/register
+2025-03-18 17:35:44 [http-nio-9098-exec-4] global - Header -> content-type : application/json
+2025-03-18 17:35:44 [http-nio-9098-exec-4] global - Header -> user-agent : PostmanRuntime/7.43.2
+2025-03-18 17:35:44 [http-nio-9098-exec-4] global - Header -> accept : */*
+2025-03-18 17:35:44 [http-nio-9098-exec-4] global - Header -> postman-token : 74a3cf10-cdb5-4b21-ba37-afb5ad15e97b
+2025-03-18 17:35:44 [http-nio-9098-exec-4] global - Header -> host : localhost:9098
+2025-03-18 17:35:44 [http-nio-9098-exec-4] global - Header -> accept-encoding : gzip, deflate, br
+2025-03-18 17:35:44 [http-nio-9098-exec-4] global - Header -> connection : keep-alive
+2025-03-18 17:35:44 [http-nio-9098-exec-4] global - Header -> content-length : 154
+2025-03-18 17:35:44 [http-nio-9098-exec-4] com.jwtauth.jwtauth.utils.EmailUtil - isUniqueEmail-> email: am.d.ddsk@gmgdsghg..dkkail.com already exists
+2025-03-18 17:35:44 [http-nio-9098-exec-4] global - Response Body: {"type":"about:blank","title":"Bad Request","status":400,"detail":"Invalid request content.","instance":"/api/v1/auth/register"}
+2025-03-18 17:35:50 [http-nio-9098-exec-6] c.jwtauth.jwtauth.filter.JWTFilter - Authorization header is missing or does not start with Bearer
+2025-03-18 17:35:50 [http-nio-9098-exec-6] global - Incoming Request: POST /api/v1/auth/register
+2025-03-18 17:35:50 [http-nio-9098-exec-6] global - Header -> content-type : application/json
+2025-03-18 17:35:50 [http-nio-9098-exec-6] global - Header -> user-agent : PostmanRuntime/7.43.2
+2025-03-18 17:35:50 [http-nio-9098-exec-6] global - Header -> accept : */*
+2025-03-18 17:35:50 [http-nio-9098-exec-6] global - Header -> postman-token : c35b330b-9e25-486f-9bed-8ce870d6dee4
+2025-03-18 17:35:50 [http-nio-9098-exec-6] global - Header -> host : localhost:9098
+2025-03-18 17:35:50 [http-nio-9098-exec-6] global - Header -> accept-encoding : gzip, deflate, br
+2025-03-18 17:35:50 [http-nio-9098-exec-6] global - Header -> connection : keep-alive
+2025-03-18 17:35:50 [http-nio-9098-exec-6] global - Header -> content-length : 155
+2025-03-18 17:35:50 [http-nio-9098-exec-6] com.jwtauth.jwtauth.utils.EmailUtil - isUniqueEmail-> email: am.d.ddsk@gmgdsghg...dkkail.com verified
+2025-03-18 17:35:50 [http-nio-9098-exec-6] c.j.j.controller.AuthController - Registration attempt for user: dssfgddsgfddvjhfjjddjgdssg
+2025-03-18 17:35:50 [http-nio-9098-exec-6] c.j.jwtauth.service.AuthService - Registering user with username: dssfgddsgfddvjhfjjddjgdssg
+2025-03-18 17:35:50 [http-nio-9098-exec-6] c.j.jwtauth.service.AuthService - Is user 'dssfgddsgfddvjhfjjddjgdssg' enabled: true
+2025-03-18 17:35:50 [http-nio-9098-exec-6] c.j.jwtauth.service.AuthService - User already exists: dssfgddsgfddvjhfjjddjgdssg
+2025-03-18 17:35:50 [http-nio-9098-exec-6] c.j.j.controller.AuthController - Registration successful for user: dssfgddsgfddvjhfjjddjgdssg
+2025-03-18 17:35:50 [http-nio-9098-exec-6] global - Response Body: {"error":null,"message":"User already exists in the system"}
+2025-03-18 17:35:54 [http-nio-9098-exec-7] c.jwtauth.jwtauth.filter.JWTFilter - Authorization header is missing or does not start with Bearer
+2025-03-18 17:35:54 [http-nio-9098-exec-7] global - Incoming Request: POST /api/v1/auth/register
+2025-03-18 17:35:54 [http-nio-9098-exec-7] global - Header -> content-type : application/json
+2025-03-18 17:35:54 [http-nio-9098-exec-7] global - Header -> user-agent : PostmanRuntime/7.43.2
+2025-03-18 17:35:54 [http-nio-9098-exec-7] global - Header -> accept : */*
+2025-03-18 17:35:54 [http-nio-9098-exec-7] global - Header -> postman-token : f395780c-3fe7-469a-b25f-b57f32864db2
+2025-03-18 17:35:54 [http-nio-9098-exec-7] global - Header -> host : localhost:9098
+2025-03-18 17:35:54 [http-nio-9098-exec-7] global - Header -> accept-encoding : gzip, deflate, br
+2025-03-18 17:35:54 [http-nio-9098-exec-7] global - Header -> connection : keep-alive
+2025-03-18 17:35:54 [http-nio-9098-exec-7] global - Header -> content-length : 156
+2025-03-18 17:35:54 [http-nio-9098-exec-7] com.jwtauth.jwtauth.utils.EmailUtil - isUniqueEmail-> email: am.d.ddsk@gmgdsghg...dkkail.com verified
+2025-03-18 17:35:54 [http-nio-9098-exec-7] c.j.j.controller.AuthController - Registration attempt for user: dssfgddsgfddvjhfdjjddjgdssg
+2025-03-18 17:35:54 [http-nio-9098-exec-7] c.j.jwtauth.service.AuthService - Registering user with username: dssfgddsgfddvjhfdjjddjgdssg
+2025-03-18 17:35:54 [http-nio-9098-exec-7] c.j.jwtauth.service.AuthService - Is user 'dssfgddsgfddvjhfdjjddjgdssg' enabled: false
+2025-03-18 17:35:54 [http-nio-9098-exec-7] c.j.jwtauth.service.AuthService - Creating user with username: dssfgddsgfddvjhfdjjddjgdssg
+2025-03-18 17:35:54 [http-nio-9098-exec-7] o.s.orm.jpa.JpaTransactionManager - Found thread-bound EntityManager [SessionImpl(1639128001<open>)] for JPA transaction
+2025-03-18 17:35:54 [http-nio-9098-exec-7] o.s.orm.jpa.JpaTransactionManager - Creating new transaction with name [org.springframework.data.jpa.repository.support.SimpleJpaRepository.save]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-03-18 17:35:54 [http-nio-9098-exec-7] o.s.orm.jpa.JpaTransactionManager - Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@4ae389d4]
+2025-03-18 17:35:54 [http-nio-9098-exec-7] o.s.orm.jpa.JpaTransactionManager - Initiating transaction commit
+2025-03-18 17:35:54 [http-nio-9098-exec-7] o.s.orm.jpa.JpaTransactionManager - Committing JPA transaction on EntityManager [SessionImpl(1639128001<open>)]
+2025-03-18 17:35:54 [http-nio-9098-exec-7] o.s.orm.jpa.JpaTransactionManager - Not closing pre-bound JPA EntityManager after transaction
+2025-03-18 17:35:54 [http-nio-9098-exec-7] c.j.jwtauth.service.AuthService - User created with ID: 42
+2025-03-18 17:35:54 [http-nio-9098-exec-7] c.j.jwtauth.service.AuthService - User registered successfully with ID: 42
+2025-03-18 17:35:54 [http-nio-9098-exec-7] c.j.j.controller.AuthController - Registration successful for user: dssfgddsgfddvjhfdjjddjgdssg
+2025-03-18 17:35:54 [http-nio-9098-exec-7] global - Response Body: {"error":"User registered with ID 42","message":null}
+2025-03-18 17:36:06 [http-nio-9098-exec-5] c.jwtauth.jwtauth.filter.JWTFilter - Authorization header is missing or does not start with Bearer
+2025-03-18 17:36:06 [http-nio-9098-exec-5] global - Incoming Request: POST /api/v1/auth/register
+2025-03-18 17:36:06 [http-nio-9098-exec-5] global - Header -> content-type : application/json
+2025-03-18 17:36:06 [http-nio-9098-exec-5] global - Header -> user-agent : PostmanRuntime/7.43.2
+2025-03-18 17:36:06 [http-nio-9098-exec-5] global - Header -> accept : */*
+2025-03-18 17:36:06 [http-nio-9098-exec-5] global - Header -> postman-token : a424ec17-529b-432c-8f42-d21f343bd22e
+2025-03-18 17:36:06 [http-nio-9098-exec-5] global - Header -> host : localhost:9098
+2025-03-18 17:36:06 [http-nio-9098-exec-5] global - Header -> accept-encoding : gzip, deflate, br
+2025-03-18 17:36:06 [http-nio-9098-exec-5] global - Header -> connection : keep-alive
+2025-03-18 17:36:06 [http-nio-9098-exec-5] global - Header -> content-length : 156
+2025-03-18 17:36:06 [http-nio-9098-exec-5] com.jwtauth.jwtauth.utils.EmailUtil - isUniqueEmail-> email: am.d.ddsk@gmgdsghg...dkkail.com already exists
+2025-03-18 17:36:06 [http-nio-9098-exec-5] global - Response Body: {"type":"about:blank","title":"Bad Request","status":400,"detail":"Invalid request content.","instance":"/api/v1/auth/register"}
