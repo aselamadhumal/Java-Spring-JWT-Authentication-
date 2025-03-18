@@ -7,6 +7,7 @@ import com.jwtauth.jwtauth.service.AuthService;
 import com.jwtauth.jwtauth.service.JWTService;
 import com.jwtauth.jwtauth.service.UserPaginationService;
 import io.jsonwebtoken.ExpiredJwtException;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,16 +57,16 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponseDTO> register(@RequestBody RegisterRequestDTO registerData) {
+    public ResponseEntity<RegisterResponseDTO> register(@Valid @RequestBody RegisterRequestDTO registerData) {
         logger.info("Registration attempt for user: {}", registerData.getUsername());
         RegisterResponseDTO res = authService.register(registerData);
 
 
-
-        if (res.getError() != null) {
+      /*  if (res.getError() != null) {
             logger.warn("Registration failed for user: {}. Reason: {}", registerData.getUsername(), res.getError());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
-        }
+        }*/
+
 
         logger.info("Registration successful for user: {}", registerData.getUsername());
         return ResponseEntity.ok(res);
