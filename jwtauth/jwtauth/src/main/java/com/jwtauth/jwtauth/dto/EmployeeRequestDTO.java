@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
 
 @Getter
@@ -12,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class EmployeeRequestDTO {
 
-
+    @Length(min = 1, max = 5,message = "add field")
     private String name;
 
     private String department;

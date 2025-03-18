@@ -4,6 +4,7 @@ import com.jwtauth.jwtauth.dto.EmployeeRequestDTO;
 import com.jwtauth.jwtauth.dto.EmployeeResponseDTO;
 import com.jwtauth.jwtauth.model.EmployeeEntity;
 import com.jwtauth.jwtauth.service.EmployeeService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ public class EmployeeController {
 
     // Create Employee
     @PostMapping("/register")
-    public ResponseEntity<EmployeeResponseDTO> createEmployee(@RequestBody EmployeeRequestDTO employeeRequestDTO) {
+    public ResponseEntity<EmployeeResponseDTO> createEmployee(@RequestBody @Valid EmployeeRequestDTO employeeRequestDTO) {
         EmployeeEntity employeeEntity = new EmployeeEntity();
         employeeEntity.setName(employeeRequestDTO.getName());
         employeeEntity.setDepartment(employeeRequestDTO.getDepartment());

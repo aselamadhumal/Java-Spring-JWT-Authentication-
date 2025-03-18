@@ -1,6 +1,9 @@
 package com.jwtauth.jwtauth.service;
 
 import com.jwtauth.jwtauth.dto.*;
+import com.jwtauth.jwtauth.exceptions.AuthenticationException;
+import com.jwtauth.jwtauth.exceptions.LoginFailedException;
+import com.jwtauth.jwtauth.exceptions.UserNotFoundException;
 import com.jwtauth.jwtauth.model.UserEntity;
 import com.jwtauth.jwtauth.repository.UserRepository;
 import io.jsonwebtoken.Claims;
@@ -52,7 +55,7 @@ public class AuthService {
     }
 
 
-    public LoginResponseDTO login(LoginRequestDTO loginData) {
+   /* public LoginResponseDTO login(LoginRequestDTO loginData) {
         // Generate a unique identifier for this login attempt
         String referencesID = UUID.randomUUID().toString();
 
@@ -97,7 +100,53 @@ public class AuthService {
 
         logger.info("Token generated successfully for user: {}", loginData.getUsername());
         return new LoginResponseDTO(accessToken, LocalDateTime.now(), null, "Token generated successfully", refreshToken);
+    }*/
+
+    public LoginResponseDTO login(LoginRequestDTO loginData) {
+        String referencesID = UUID.randomUUID().toString();
+        logger.info("ref: {}", referencesID);
+
+
+        logger.info("Attempting login for user: {}", loginData.getUsername());
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginData.getUsername(), loginData.getPassword())
+            );
+        } catch (BadCredentialsException e) {
+            logger.warn("Authentication failed for user: {} - Invalid credentials", loginData.getUsername());
+            //throw new LoginFailedException("Invalid credentials: The username or password is incorrect.");
+            throw new LoginFailedException(e.getMessage());
+        } catch (Exception e) {
+            logger.error("Unexpected error during authentication for user {}: {}", loginData.getUsername(), e.getMessage(), e);
+            throw new AuthenticationException("An unexpected error occurred during authentication.");
+        }
+
+        // Token generation logic
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("username", loginData.getUsername());
+        claims.put("reference", referencesID);
+
+        String accessToken = jwtService.getJWTToken(loginData.getUsername(), claims);
+        String refreshToken = jwtService.getRefreshToken(loginData.getUsername(), claims);
+
+        Optional<UserEntity> userEntity = userRepository.findByUsername(loginData.getUsername());
+
+        if (userEntity.isEmpty()) {
+            logger.info("No user found with this username {}", loginData.getUsername());
+            throw new UserNotFoundException("User not found with username: " + loginData.getUsername());
+        }
+
+        UserEntity user = userEntity.get();
+        user.setReferencesID(referencesID);
+        user.setExpireAt(LocalDateTime.now().plusMinutes(15));
+        userRepository.save(user);
+
+        logger.info("Token generated successfully for user: {}", loginData.getUsername());
+        return new LoginResponseDTO(accessToken, LocalDateTime.now(), null, "Token generated successfully", refreshToken);
     }
+
+
+
 
 
     public RegisterResponseDTO register(RegisterRequestDTO registerData) {
