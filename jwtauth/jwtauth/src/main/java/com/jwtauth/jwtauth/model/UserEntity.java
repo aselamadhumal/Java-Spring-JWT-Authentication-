@@ -1,5 +1,6 @@
 package com.jwtauth.jwtauth.model;
 
+import com.jwtauth.jwtauth.annotations.mobile.ValidMobile;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,6 +32,11 @@ public class UserEntity {
 
     @Column(nullable = false)
     private String password;
+
+
+    private String phoneNo;
+
+    private String nic;
 
     private String referencesID;
 

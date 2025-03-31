@@ -6,6 +6,7 @@ import com.jwtauth.jwtauth.exceptions.LoginFailedException;
 import com.jwtauth.jwtauth.exceptions.UserNotFoundException;
 import com.jwtauth.jwtauth.model.UserEntity;
 import com.jwtauth.jwtauth.repository.UserRepository;
+import com.jwtauth.jwtauth.utils.NicUtil;
 import io.jsonwebtoken.Claims;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,8 @@ import org.springframework.util.StringUtils;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import static com.jwtauth.jwtauth.utils.PhoneNumberUtil.formatNumber;
+
 @Service
 public class AuthService {
     private static final Logger logger = LoggerFactory.getLogger(AuthService.class);
@@ -27,13 +30,15 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JWTService jwtService;
+    private final NicUtil nicUtil;
 
 
-    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JWTService jwtService) {
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JWTService jwtService, NicUtil nicUtil) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
+        this.nicUtil = nicUtil;
     }
 
     public List<UserEntity> getAllUsers() {
@@ -42,15 +47,34 @@ public class AuthService {
     }
 
     public UserEntity createUser(RegisterRequestDTO userData) {
-
+        // Log for debugging
         logger.info("Creating user with username: {}", userData.getUsername());
+
+        // Validate the NIC
+        if (!nicUtil.isValidNic(userData.getNic())) {
+            throw new IllegalArgumentException("Invalid NIC format");
+        }
+
+        // Check if NIC is unique
+        if (!nicUtil.isUniqueNic(userData.getNic())) {
+            throw new IllegalArgumentException("NIC is already in use");
+        }
+
+        // Create a new UserEntity
         UserEntity newUser = new UserEntity();
         newUser.setUsername(userData.getUsername());
         newUser.setPassword(passwordEncoder.encode(userData.getPassword()));
         newUser.setEmail(userData.getEmail());
+        newUser.setPhoneNo(formatNumber(userData.getPhoneNo()));
+        newUser.setNic(userData.getNic());  // Set NIC
 
+        // Save the user entity
         UserEntity savedUser = userRepository.save(newUser);
+
+        // Log the saved user details
         logger.info("User created with ID: {}", savedUser.getId());
+
+        // Return the saved user
         return savedUser;
     }
 
