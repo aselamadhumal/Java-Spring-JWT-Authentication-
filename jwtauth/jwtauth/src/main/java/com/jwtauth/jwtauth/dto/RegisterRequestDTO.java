@@ -1,6 +1,9 @@
 package com.jwtauth.jwtauth.dto;
 
 import com.jwtauth.jwtauth.annotations.email.UniqueEmail;
+import com.jwtauth.jwtauth.annotations.mobile.UniqueMobile;
+import com.jwtauth.jwtauth.annotations.mobile.ValidMobile;
+import com.jwtauth.jwtauth.annotations.nic.ValidNic;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -21,5 +24,16 @@ public class RegisterRequestDTO {
     private String email;
     private String password;//nic,phone,A812@
     //userid
+    @ValidMobile
+    @UniqueMobile
+    private String phoneNo;
+
+    @ValidNic
+    private String nic;
+
+
+
+
+
 
 }
