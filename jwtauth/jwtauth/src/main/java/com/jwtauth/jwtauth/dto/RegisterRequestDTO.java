@@ -19,6 +19,7 @@ public class RegisterRequestDTO {
     //@NotBlank(message = "Email should not be blank")
     @UniqueEmail(message = "Email must be unique")
     private String email;
-    private String password;
+    private String password;//nic,phone,A812@
+    //userid
 
 }
