@@ -12,6 +12,8 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {  // ID
 
     Optional<UserEntity> findByUsername(String username);
 
+    Optional<UserEntity> findByEmail(String email);
+
     boolean existsUserByEmail(String email);
 
     boolean existsUserEntityByPhoneNo(String phoneNo);
@@ -20,4 +22,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {  // ID
 
     @Query("SELECT u FROM UserEntity u WHERE u.nic IN :nics")
     List<UserEntity> findAllByNicIn(@Param("nics") List<String> nics);
+
+    @Query("SELECT CASE WHEN COUNT(a) > 0 THEN true ELSE false END FROM UserEntity a WHERE  a.username = :username")
+    boolean existsByUsername(@Param("username") String username);
 }

@@ -6,11 +6,11 @@ import com.jwtauth.jwtauth.repository.UserRepository;
 import com.jwtauth.jwtauth.service.AuthService;
 import com.jwtauth.jwtauth.service.JWTService;
 import com.jwtauth.jwtauth.service.UserPaginationService;
+import com.jwtauth.jwtauth.utils.ResponseUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,21 +56,34 @@ public class AuthController {
         return ResponseEntity.ok(res);
     }
 
+//    @PostMapping("/register")
+//    public ResponseEntity<BaseResponse<HashMap<String, Object>>> register(@Valid @RequestBody RegisterRequestDTO registerData) {
+//        logger.info("Registration attempt for user: {}", registerData.getUsername());
+//        BaseResponse<HashMap<String, Object>> res = authService.registerUser(registerData);
+//
+//
+//      /*  if (res.getError() != null) {
+//            logger.warn("Registration failed for user: {}. Reason: {}", registerData.getUsername(), res.getError());
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
+//        }*/
+//
+//
+//        logger.info("Registration successful for user: {}", registerData.getUsername());
+//        return ResponseEntity.ok(res);
+//    }
+
+
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponseDTO> register(@Valid @RequestBody RegisterRequestDTO registerData) {
-        logger.info("Registration attempt for user: {}", registerData.getUsername());
-        RegisterResponseDTO res = authService.register(registerData);
+    public ResponseEntity<BaseResponse<Map<String, Object>>> registerUser(@Valid @RequestBody RegisterRequestDTO registerData) {
+        BaseResponse<Map<String, Object>> response = authService.registerUser(registerData);
 
-
-      /*  if (res.getError() != null) {
-            logger.warn("Registration failed for user: {}. Reason: {}", registerData.getUsername(), res.getError());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
-        }*/
-
-
-        logger.info("Registration successful for user: {}", registerData.getUsername());
-        return ResponseEntity.ok(res);
+        if (response.getCode().equals(ResponseUtil.FAILED_CODE)) {
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
     }
+
 
     // Fixed: Changed to use RequestBody and added proper error handling
     @PostMapping("/refresh")

@@ -6,8 +6,12 @@ import com.jwtauth.jwtauth.exceptions.LoginFailedException;
 import com.jwtauth.jwtauth.exceptions.UserNotFoundException;
 import com.jwtauth.jwtauth.model.UserEntity;
 import com.jwtauth.jwtauth.repository.UserRepository;
+import com.jwtauth.jwtauth.utils.MessageConstantUtil;
 import com.jwtauth.jwtauth.utils.NicUtil;
+import com.jwtauth.jwtauth.utils.ResponseUtil;
+import com.jwtauth.jwtauth.validators.password.PasswordValidator;
 import io.jsonwebtoken.Claims;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -46,7 +50,61 @@ public class AuthService {
         return userRepository.findAll();
     }
 
-    public UserEntity createUser(RegisterRequestDTO userData) {
+    private UserEntity createUser(RegisterRequestDTO userData) {
+        logger.info("Creating user with username: {}", userData.getUsername());
+
+        UserEntity newUser = new UserEntity();
+        newUser.setUsername(userData.getUsername());
+        newUser.setPassword(passwordEncoder.encode(userData.getPassword()));
+        newUser.setEmail(userData.getEmail());
+        newUser.setPhoneNo(formatNumber(userData.getPhoneNo()));
+        newUser.setNic(userData.getNic());
+
+        UserEntity savedUser = userRepository.save(newUser);
+        logger.info("User created with ID: {}", savedUser.getId());
+        return savedUser;
+    }
+
+    public BaseResponse<Map<String, Object>> registerUser(@Valid RegisterRequestDTO registerData) {
+        logger.info("Registering user with username: {}", registerData.getUsername());
+
+        try {
+            // Validation checks
+            if (isUserEnabled(registerData.getUsername())) {
+                return BaseResponse.failure(MessageConstantUtil.ALREADY_EXIST_ACCOUNT);
+            }
+
+            if (isEmailEnabled(registerData.getEmail())) {
+                return BaseResponse.failure(MessageConstantUtil.ALREADY_HAS_EMAIL);
+            }
+
+            if (!nicUtil.isValidNic(registerData.getNic())) {
+                return BaseResponse.failure(MessageConstantUtil.INVALID_NIC);
+            }
+
+            if (!nicUtil.isUniqueNic(registerData.getNic())) {
+                return BaseResponse.failure(MessageConstantUtil.UNIQUE_NIC);
+            }
+
+            PasswordValidator passwordValidator = new PasswordValidator();
+            if (!passwordValidator.isValid(registerData.getPassword(), null)) {
+                return BaseResponse.failure(MessageConstantUtil.INVALID_PASSWORD_PATTERN);
+            }
+
+            UserEntity savedUser = createUser(registerData);
+
+            return (savedUser != null)
+                    ? BaseResponse.success(
+                    Map.of("userId", savedUser.getId()),
+                    MessageConstantUtil.USER_REGISTERED_SUCCESSFULLY)
+                    : BaseResponse.failure(MessageConstantUtil.REGISTRATION_FAILED);
+
+        } catch (Exception e) {
+            logger.error("Error during user registration for username: {}", registerData.getUsername(), e);
+            return BaseResponse.failure(MessageConstantUtil.UNEXPECTED_ERROR);
+        }
+    }
+    /*public UserEntity createUser(RegisterRequestDTO userData) {
         // Log for debugging
         logger.info("Creating user with username: {}", userData.getUsername());
 
@@ -77,7 +135,7 @@ public class AuthService {
         // Return the saved user
         return savedUser;
     }
-
+*/
 
    /* public LoginResponseDTO login(LoginRequestDTO loginData) {
         // Generate a unique identifier for this login attempt
@@ -126,6 +184,8 @@ public class AuthService {
         return new LoginResponseDTO(accessToken, LocalDateTime.now(), null, "Token generated successfully", refreshToken);
     }*/
 
+
+
     public LoginResponseDTO login(LoginRequestDTO loginData) {
         String referencesID = UUID.randomUUID().toString();
         logger.info("ref: {}", referencesID);
@@ -171,25 +231,100 @@ public class AuthService {
 
 
 
-
-
-    public RegisterResponseDTO register(RegisterRequestDTO registerData) {
+    /*public BaseResponse<HashMap<String, Object>> registerUser(RegisterRequestDTO registerData) {
         logger.info("Registering user with username: {}", registerData.getUsername());
 
-        if (isUserEnabled(registerData.getUsername())) {
-            logger.warn("User already exists: {}", registerData.getUsername());
-            return new RegisterResponseDTO(null, "User already exists in the system");
-        }
-
         try {
-            UserEntity userData = this.createUser(registerData);
-            logger.info("User registered successfully with ID: {}", userData.getId());
-            return new RegisterResponseDTO(String.format("User registered with ID %s", userData.getId()), null);
+            // Check if the user already exists
+            if (isUserEnabled(registerData.getUsername())) {
+                logger.warn("User already exists: {}", registerData.getUsername());
+                return BaseResponse.<HashMap<String, Object>>builder()
+                        .code(ResponseUtil.FAILED_CODE)
+                        .title(ResponseUtil.FAILED)
+                        .message(MessageConstantUtil.ALREADY_EXIST_ACCOUNT)
+                        .build();
+            }
+            // Check if the email already exists
+            else if (isEmailEnabled(registerData.getEmail())) {
+                logger.warn("Email already exists: {}", registerData.getEmail());
+                return BaseResponse.<HashMap<String, Object>>builder()
+                        .code(ResponseUtil.FAILED_CODE)
+                        .title(ResponseUtil.FAILED)
+                        .message(MessageConstantUtil.ALREADY_HAS_EMAIL)
+                        .build();
+            }
+            // Validate NIC number
+            else if (!nicUtil.isValidNic(registerData.getNic())) {
+                logger.warn("Invalid NIC number: {}", registerData.getNic());
+                return BaseResponse.<HashMap<String, Object>>builder()
+                        .code(ResponseUtil.FAILED_CODE)
+                        .title(ResponseUtil.FAILED)
+                        .message(MessageConstantUtil.INVALID_NIC)
+                        .build();
+            }
+            else if (!nicUtil.isUniqueNic(registerData.getNic())) {
+                logger.warn("Given NIC is already in the sytem: {}", registerData.getNic());
+                return BaseResponse.<HashMap<String, Object>>builder()
+                        .code(ResponseUtil.FAILED_CODE)
+                        .title(ResponseUtil.FAILED)
+                        .message(MessageConstantUtil.UNIQU_NIC)
+                        .build();
+            }
+
+            else {
+                PasswordValidator passwordValidator = new PasswordValidator();
+                boolean isPasswordValid = passwordValidator.isValid(registerData.getPassword(), null);  // Passing null for the context
+                logger.debug("Password validation result for '{}' is: {}", registerData.getPassword(), isPasswordValid);
+
+                if (!isPasswordValid) {
+                    logger.info("Given password does not meet the criteria.");
+                    return BaseResponse.<HashMap<String, Object>>builder()
+                            .code(ResponseUtil.FAILED_CODE)
+                            .title(ResponseUtil.FAILED)
+                            .message(MessageConstantUtil.INVALIED_PASSWORD_PATTERN)
+                            .build();
+                }
+            }
+
+
+            // Create user if all checks pass
+            UserEntity registrationSuccessful = this.createUser(registerData);
+
+            if (registrationSuccessful != null) {
+                return BaseResponse.<HashMap<String, Object>>builder()
+                        .code(ResponseUtil.SUCCESS_CODE)
+                        .title(ResponseUtil.SUCCESS)
+                        .message(MessageConstantUtil.USER_REGISTERED_SUCCESSFULLY)
+                        .build();
+            } else {
+                return BaseResponse.<HashMap<String, Object>>builder()
+                        .code(ResponseUtil.FAILED_CODE)
+                        .title(ResponseUtil.FAILED)
+                        .message(MessageConstantUtil.REGISTRATION_FAILED)
+                        .build();
+            }
         } catch (Exception e) {
-            logger.error("System error occurred while registering user: {} - {}", registerData.getUsername(), e.getMessage(), e);
-            return new RegisterResponseDTO(null, "System error during registration");
+            logger.error("Error during user registration", e);
+            return BaseResponse.<HashMap<String, Object>>builder()
+                    .code(ResponseUtil.FAILED_CODE)
+                    .title(ResponseUtil.FAILED)
+                    .message("An unexpected error occurred during registration")
+                    .build();
         }
     }
+*/
+
+
+//    public RegisterResponseDTO register(RegisterRequestDTO registerData) {
+//        logger.info("Registering user with username: {}", registerData.getUsername());
+//
+//        if (isUserEnabled(registerData.getUsername())) {
+//            logger.warn("User already exists: {}", registerData.getUsername());
+//            return new RegisterResponseDTO(null, "User already exists in the system");
+//        }
+//
+//
+//    }
 
     /*public LogoutRequestDTO logout(String accessToken) {
 
@@ -264,6 +399,22 @@ public class AuthService {
         logger.info("Is user '{}' enabled: {}", username, isEnabled);
         return isEnabled;
     }
+
+    private boolean isEmailEnabled(String email) {
+        boolean isEnabled = userRepository.findByEmail(email).isPresent();
+        logger.info("Is user '{}' enabled: {}", email, isEnabled);
+        return isEnabled;
+    }
+
+
+
+
+
+
+
+
+
+
 
 
     
