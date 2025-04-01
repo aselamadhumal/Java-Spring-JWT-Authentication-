@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users", uniqueConstraints = {
@@ -42,8 +43,13 @@ public class UserEntity {
 
     private LocalDateTime expireAt;
 
-    //private Boolean blacklisted = false;
-   // private LocalDateTime expiresAt;
+    @Column(nullable = false, unique = true)
+    private String uuid;
 
-
+    @PrePersist
+    public void generateUUID() {
+        if (this.uuid == null) {
+            this.uuid = UUID.randomUUID().toString();  // Generate UUID if not already set
+        }
+    }
 }
