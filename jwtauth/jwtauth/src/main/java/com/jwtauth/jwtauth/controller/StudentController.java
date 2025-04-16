@@ -1,6 +1,6 @@
 package com.jwtauth.jwtauth.controller;
 
-import com.jwtauth.jwtauth.model.StudentEntity;
+import com.jwtauth.jwtauth.entity.StudentEntity;
 import com.jwtauth.jwtauth.repository.StudentRepository;
 import com.jwtauth.jwtauth.service.GenericCrudService;
 import org.springframework.http.HttpStatus;

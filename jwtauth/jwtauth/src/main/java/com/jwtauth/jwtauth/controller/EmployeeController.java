@@ -2,7 +2,7 @@ package com.jwtauth.jwtauth.controller;
 
 import com.jwtauth.jwtauth.dto.EmployeeRequestDTO;
 import com.jwtauth.jwtauth.dto.EmployeeResponseDTO;
-import com.jwtauth.jwtauth.model.EmployeeEntity;
+import com.jwtauth.jwtauth.entity.EmployeeEntity;
 import com.jwtauth.jwtauth.service.EmployeeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

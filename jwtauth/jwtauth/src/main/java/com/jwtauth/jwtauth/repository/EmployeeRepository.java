@@ -1,5 +1,5 @@
 package com.jwtauth.jwtauth.repository;
-import com.jwtauth.jwtauth.model.EmployeeEntity;
+import com.jwtauth.jwtauth.entity.EmployeeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 

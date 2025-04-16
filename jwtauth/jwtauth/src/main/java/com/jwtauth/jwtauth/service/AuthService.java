@@ -1,17 +1,19 @@
 package com.jwtauth.jwtauth.service;
 
 import com.jwtauth.jwtauth.dto.*;
+import com.jwtauth.jwtauth.entity.users.Role;
 import com.jwtauth.jwtauth.exceptions.AuthenticationException;
 import com.jwtauth.jwtauth.exceptions.LoginFailedException;
 import com.jwtauth.jwtauth.exceptions.UserNotFoundException;
-import com.jwtauth.jwtauth.model.UserEntity;
+import com.jwtauth.jwtauth.entity.users.UserEntity;
 import com.jwtauth.jwtauth.repository.UserRepository;
+import com.jwtauth.jwtauth.utils.Constants;
 import com.jwtauth.jwtauth.utils.MessageConstantUtil;
-import com.jwtauth.jwtauth.utils.NicUtil;
 import com.jwtauth.jwtauth.utils.ResponseUtil;
-import com.jwtauth.jwtauth.validators.password.PasswordValidator;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,12 +23,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
 
 import static com.jwtauth.jwtauth.utils.PhoneNumberUtil.formatNumber;
 
 @Service
+@RequiredArgsConstructor
 public class AuthService {
     private static final Logger logger = LoggerFactory.getLogger(AuthService.class);
 
@@ -34,20 +38,19 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JWTService jwtService;
-    private final NicUtil nicUtil;
-
-
-    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JWTService jwtService, NicUtil nicUtil) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.authenticationManager = authenticationManager;
-        this.jwtService = jwtService;
-        this.nicUtil = nicUtil;
-    }
+    private final RoleService roleService;
 
     public List<UserEntity> getAllUsers() {
         logger.info("Fetching all users");
         return userRepository.findAll();
+    }
+
+    public void persistUser(UserEntity user) {
+        try {
+            userRepository.save(user);
+        } catch (Exception e) {
+            logger.error("persistUser-> Exception: {}", e.getMessage(), e);
+        }
     }
 
     private UserEntity createUser(RegisterRequestDTO userData) {
@@ -60,236 +63,29 @@ public class AuthService {
         newUser.setPhoneNo(formatNumber(userData.getPhoneNo()));
         newUser.setNic(userData.getNic());
 
+        Role role = roleService.getRoleByName(Constants.ROLE_APP_USER);
+        Set<Role> userRoles = new HashSet<>();
+        userRoles.add(role);
+        newUser.setRoles(userRoles);
+        persistUser(newUser);
+
+        // Log the user registration details
+        logger.info("User saved with username: {}, email: {}, phone: {}, nic: {}",
+                userData.getUsername(), userData.getEmail(), userData.getPhoneNo(), userData.getNic());
+
+        // Save the new user
         UserEntity savedUser = userRepository.save(newUser);
         logger.info("User created with ID: {}", savedUser.getId());
         return savedUser;
+
     }
 
-    public BaseResponse<Map<String, Object>> registerUser(@Valid RegisterRequestDTO registerData) {
+    public BaseResponse<HashMap<String, Object>> registerUser(@Valid RegisterRequestDTO registerData) {
         logger.info("Registering user with username: {}", registerData.getUsername());
 
         try {
-            // Validation checks
-            if (isUserEnabled(registerData.getUsername())) {
-                return BaseResponse.failure(MessageConstantUtil.ALREADY_EXIST_ACCOUNT);
-            }
 
-            if (isEmailEnabled(registerData.getEmail())) {
-                return BaseResponse.failure(MessageConstantUtil.ALREADY_HAS_EMAIL);
-            }
-
-            if (!nicUtil.isValidNic(registerData.getNic())) {
-                return BaseResponse.failure(MessageConstantUtil.INVALID_NIC);
-            }
-
-            if (!nicUtil.isUniqueNic(registerData.getNic())) {
-                return BaseResponse.failure(MessageConstantUtil.UNIQUE_NIC);
-            }
-
-            PasswordValidator passwordValidator = new PasswordValidator();
-            if (!passwordValidator.isValid(registerData.getPassword(), null)) {
-                return BaseResponse.failure(MessageConstantUtil.INVALID_PASSWORD_PATTERN);
-            }
-
-            UserEntity savedUser = createUser(registerData);
-
-            return (savedUser != null)
-                    ? BaseResponse.success(
-                    Map.of("userId", savedUser.getId()),
-                    MessageConstantUtil.USER_REGISTERED_SUCCESSFULLY)
-                    : BaseResponse.failure(MessageConstantUtil.REGISTRATION_FAILED);
-
-        } catch (Exception e) {
-            logger.error("Error during user registration for username: {}", registerData.getUsername(), e);
-            return BaseResponse.failure(MessageConstantUtil.UNEXPECTED_ERROR);
-        }
-    }
-    /*public UserEntity createUser(RegisterRequestDTO userData) {
-        // Log for debugging
-        logger.info("Creating user with username: {}", userData.getUsername());
-
-        // Validate the NIC
-        if (!nicUtil.isValidNic(userData.getNic())) {
-            throw new IllegalArgumentException("Invalid NIC format");
-        }
-
-        // Check if NIC is unique
-        if (!nicUtil.isUniqueNic(userData.getNic())) {
-            throw new IllegalArgumentException("NIC is already in use");
-        }
-
-        // Create a new UserEntity
-        UserEntity newUser = new UserEntity();
-        newUser.setUsername(userData.getUsername());
-        newUser.setPassword(passwordEncoder.encode(userData.getPassword()));
-        newUser.setEmail(userData.getEmail());
-        newUser.setPhoneNo(formatNumber(userData.getPhoneNo()));
-        newUser.setNic(userData.getNic());  // Set NIC
-
-        // Save the user entity
-        UserEntity savedUser = userRepository.save(newUser);
-
-        // Log the saved user details
-        logger.info("User created with ID: {}", savedUser.getId());
-
-        // Return the saved user
-        return savedUser;
-    }
-*/
-
-   /* public LoginResponseDTO login(LoginRequestDTO loginData) {
-        // Generate a unique identifier for this login attempt
-        String referencesID = UUID.randomUUID().toString();
-
-
-
-        logger.info("ref: {}", referencesID);
-
-        // Existing login logic
-        logger.info("Attempting login for user: {}", loginData.getUsername());
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginData.getUsername(), loginData.getPassword())
-            );
-        } catch (BadCredentialsException e) {
-            logger.warn("Authentication failed for user: {} - In" +
-                    "valid credentials", loginData.getUsername());
-            return new LoginResponseDTO(null, null, "Invalid credentials", "The username or password is incorrect.", null);
-        } catch (Exception e) {
-            logger.error("Unexpected error during authentication for user {}: {}", loginData.getUsername(), e.getMessage(), e);
-            return new LoginResponseDTO(null, null, "Authentication failed", "An unexpected error occurred during authentication.", null);
-        }
-
-        // Token generation logic
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("username", loginData.getUsername());
-        claims.put("reference", referencesID);
-
-        String accessToken = jwtService.getJWTToken(loginData.getUsername(), claims);
-        String refreshToken = jwtService.getRefreshToken(loginData.getUsername(), claims);
-
-        Optional<UserEntity> userEntity = userRepository.findByUsername(loginData.getUsername());
-
-        if (userEntity.isEmpty()) {
-            logger.info("No user found with this username{}", loginData.getUsername());
-            return null;
-        }
-
-        UserEntity user = userEntity.get();
-        user.setReferencesID(referencesID);
-        user.setExpireAt(LocalDateTime.now().plusMinutes(15));
-        userRepository.save(user);
-
-        logger.info("Token generated successfully for user: {}", loginData.getUsername());
-        return new LoginResponseDTO(accessToken, LocalDateTime.now(), null, "Token generated successfully", refreshToken);
-    }*/
-
-
-
-    public LoginResponseDTO login(LoginRequestDTO loginData) {
-        String referencesID = UUID.randomUUID().toString();
-        logger.info("ref: {}", referencesID);
-
-
-        logger.info("Attempting login for user: {}", loginData.getUsername());
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginData.getUsername(), loginData.getPassword())
-            );
-        } catch (BadCredentialsException e) {
-            logger.warn("Authentication failed for user: {} - Invalid credentials", loginData.getUsername());
-            //throw new LoginFailedException("Invalid credentials: The username or password is incorrect.");
-            throw new LoginFailedException(e.getMessage());
-        } catch (Exception e) {
-            logger.error("Unexpected error during authentication for user {}: {}", loginData.getUsername(), e.getMessage(), e);
-            throw new AuthenticationException("An unexpected error occurred during authentication.");
-        }
-
-        // Token generation logic
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("username", loginData.getUsername());
-        claims.put("reference", referencesID);
-
-        String accessToken = jwtService.getJWTToken(loginData.getUsername(), claims);
-        String refreshToken = jwtService.getRefreshToken(loginData.getUsername(), claims);
-
-        Optional<UserEntity> userEntity = userRepository.findByUsername(loginData.getUsername());
-
-        if (userEntity.isEmpty()) {
-            logger.info("No user found with this username {}", loginData.getUsername());
-            throw new UserNotFoundException("User not found with username: " + loginData.getUsername());
-        }
-
-        UserEntity user = userEntity.get();
-        user.setReferencesID(referencesID);
-        user.setExpireAt(LocalDateTime.now().plusMinutes(15));
-        userRepository.save(user);
-
-        logger.info("Token generated successfully for user: {}", loginData.getUsername());
-        return new LoginResponseDTO(accessToken, LocalDateTime.now(), null, "Token generated successfully", refreshToken);
-    }
-
-
-
-    /*public BaseResponse<HashMap<String, Object>> registerUser(RegisterRequestDTO registerData) {
-        logger.info("Registering user with username: {}", registerData.getUsername());
-
-        try {
-            // Check if the user already exists
-            if (isUserEnabled(registerData.getUsername())) {
-                logger.warn("User already exists: {}", registerData.getUsername());
-                return BaseResponse.<HashMap<String, Object>>builder()
-                        .code(ResponseUtil.FAILED_CODE)
-                        .title(ResponseUtil.FAILED)
-                        .message(MessageConstantUtil.ALREADY_EXIST_ACCOUNT)
-                        .build();
-            }
-            // Check if the email already exists
-            else if (isEmailEnabled(registerData.getEmail())) {
-                logger.warn("Email already exists: {}", registerData.getEmail());
-                return BaseResponse.<HashMap<String, Object>>builder()
-                        .code(ResponseUtil.FAILED_CODE)
-                        .title(ResponseUtil.FAILED)
-                        .message(MessageConstantUtil.ALREADY_HAS_EMAIL)
-                        .build();
-            }
-            // Validate NIC number
-            else if (!nicUtil.isValidNic(registerData.getNic())) {
-                logger.warn("Invalid NIC number: {}", registerData.getNic());
-                return BaseResponse.<HashMap<String, Object>>builder()
-                        .code(ResponseUtil.FAILED_CODE)
-                        .title(ResponseUtil.FAILED)
-                        .message(MessageConstantUtil.INVALID_NIC)
-                        .build();
-            }
-            else if (!nicUtil.isUniqueNic(registerData.getNic())) {
-                logger.warn("Given NIC is already in the sytem: {}", registerData.getNic());
-                return BaseResponse.<HashMap<String, Object>>builder()
-                        .code(ResponseUtil.FAILED_CODE)
-                        .title(ResponseUtil.FAILED)
-                        .message(MessageConstantUtil.UNIQU_NIC)
-                        .build();
-            }
-
-            else {
-                PasswordValidator passwordValidator = new PasswordValidator();
-                boolean isPasswordValid = passwordValidator.isValid(registerData.getPassword(), null);  // Passing null for the context
-                logger.debug("Password validation result for '{}' is: {}", registerData.getPassword(), isPasswordValid);
-
-                if (!isPasswordValid) {
-                    logger.info("Given password does not meet the criteria.");
-                    return BaseResponse.<HashMap<String, Object>>builder()
-                            .code(ResponseUtil.FAILED_CODE)
-                            .title(ResponseUtil.FAILED)
-                            .message(MessageConstantUtil.INVALIED_PASSWORD_PATTERN)
-                            .build();
-                }
-            }
-
-
-            // Create user if all checks pass
             UserEntity registrationSuccessful = this.createUser(registerData);
-
             if (registrationSuccessful != null) {
                 return BaseResponse.<HashMap<String, Object>>builder()
                         .code(ResponseUtil.SUCCESS_CODE)
@@ -303,6 +99,7 @@ public class AuthService {
                         .message(MessageConstantUtil.REGISTRATION_FAILED)
                         .build();
             }
+
         } catch (Exception e) {
             logger.error("Error during user registration", e);
             return BaseResponse.<HashMap<String, Object>>builder()
@@ -312,99 +109,212 @@ public class AuthService {
                     .build();
         }
     }
-*/
 
+    public BaseResponse<LoginResponseDTO> login(LoginRequestDTO loginData) {
+        String referencesID = UUID.randomUUID().toString();
+        logger.info("Reference ID: {}", referencesID);
 
-//    public RegisterResponseDTO register(RegisterRequestDTO registerData) {
-//        logger.info("Registering user with username: {}", registerData.getUsername());
-//
-//        if (isUserEnabled(registerData.getUsername())) {
-//            logger.warn("User already exists: {}", registerData.getUsername());
-//            return new RegisterResponseDTO(null, "User already exists in the system");
-//        }
-//
-//
-//    }
-
-    /*public LogoutRequestDTO logout(String accessToken) {
-
-        Claims claims =jwtService.getTokenData(accessToken);
-        String reference = claims.get("reference").toString();
-        String username = claims.getSubject();
-
-        if (!StringUtils.hasLength(reference)) {
-            logger.warn("No reference ID found in the provided token.");
-            return new LogoutRequestDTO("Invalid token or reference ID not found", null);
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginData.getUsername(), loginData.getPassword())
+            );
+        } catch (BadCredentialsException e) {
+            logger.warn("Authentication failed due to invalid credentials.");
+            throw new LoginFailedException("Invalid username or password.");
+        } catch (Exception e) {
+            logger.error("Unexpected authentication error: {}", e.getMessage(), e);
+            throw new AuthenticationException("An unexpected error occurred during authentication.");
         }
 
-        Optional<UserEntity> userEntity = userRepository.findByUsername(username);
+        // Validate user existence before token generation
+        UserEntity user = userRepository.findByUsername(loginData.getUsername())
+                .orElseThrow(() -> new UserNotFoundException("User not found with username: " + loginData.getUsername()));
 
-        if (userEntity.isEmpty()) {
-            logger.warn("No user found with reference ID: {}", reference);
-            return new LogoutRequestDTO("User not found or already logged out", null);
-        }
+        // Token generation logic
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(Constants.USERNAME, loginData.getUsername());
+        claims.put(Constants.REFERENCE, referencesID);
 
-        UserEntity user = userEntity.get();
+        String accessToken = jwtService.getJWTToken(loginData.getUsername(), claims);
+        String refreshToken = jwtService.getRefreshToken(loginData.getUsername(), claims);
 
-
-        user.setReferencesID(null);
+        // Save user details
+        user.setReferencesID(referencesID);
+        user.setExpireAt(LocalDateTime.now().plusMinutes(15));
         userRepository.save(user);
 
-        logger.info("User with reference ID: {} has been successfully logged out.", reference);
+        logger.info("Token generated successfully for user.");
 
-        // Optional: If you are maintaining a session store (like Redis), you can also remove the session here.
-        // sessionStore.remove(referencesID);
+        return BaseResponse.<LoginResponseDTO>builder()
+                .code(ResponseUtil.SUCCESS_CODE)
+                .message("Login successful")
+                .data(LoginResponseDTO.builder()
+                        .time(LocalDateTime.now().toString())
+                        .accessToken(accessToken)
+                        .reToken(refreshToken)
+                        .build())
+                .build();
+    }
 
-        return new LogoutRequestDTO("Successfully logged out", null);
-    }*/
+    public BaseResponse<Map<String, Object>> logout(String accessToken) {
+        try {
+            // Validate token and extract claims
+            Claims claims = jwtService.getTokenData(accessToken);
+            if (claims == null) {
+                logger.warn("Invalid token claims");
+                return BaseResponse.<Map<String, Object>>builder()
+                        .code(ResponseUtil.UNAUTHORIZED_CODE)
+                        .title(ResponseUtil.UNAUTHORIZED)
+                        .message("Invalid token")
+                        .data(null)
+                        .build();
+            }
 
+            String reference = claims.get(Constants.REFERENCE, String.class);
+            String username = claims.getSubject();
 
+            if (!StringUtils.hasLength(reference)) {
+                logger.warn("No reference ID found in token for user: {}", username);
+                return BaseResponse.<Map<String, Object>>builder()
+                        .code(ResponseUtil.BAD_REQUEST_CODE)
+                        .title(ResponseUtil.BAD_REQUEST)
+                        .message("Reference ID not found in token")
+                        .data(null)
+                        .build();
+            }
 
-    public void logout(String accessToken) {
+            // Find and update user
+            Optional<UserEntity> userEntity = userRepository.findByUsername(username);
+            if (userEntity.isEmpty()) {
+                logger.warn("No user found with username: {}", username);
+                return BaseResponse.<Map<String, Object>>builder()
+                        .code(ResponseUtil.NOT_FOUND_CODE)
+                        .title(ResponseUtil.NOT_FOUND)
+                        .message("User not found")
+                        .data(null)
+                        .build();
+            }
 
-        Claims claims = jwtService.getTokenData(accessToken);
-        String reference = claims.get("reference").toString();
-        String username = claims.getSubject();
+            UserEntity user = userEntity.get();
+            user.setReferencesID(null);
+            userRepository.save(user);
 
-        if (!StringUtils.hasLength(reference)) {
-            logger.warn("No reference ID found in the provided token.");
-            throw new RuntimeException("Invalid token or reference ID not found");
+            logger.info("User {} logged out successfully, reference ID cleared", username);
+
+            // Return success response with relevant data
+            Map<String, Object> responseData = new HashMap<>();
+            responseData.put("username", username);
+            responseData.put("reference", reference);
+            responseData.put("logoutTime", Instant.now().toString());
+
+            return BaseResponse.<Map<String, Object>>builder()
+                    .code(ResponseUtil.SUCCESS_CODE)
+                    .title(ResponseUtil.SUCCESS)
+                    .message("Logout successful")
+                    .data(responseData)
+                    .build();
+
+        } catch (Exception e) {
+            logger.error("Logout failed: {}", e.getMessage(), e);
+            return BaseResponse.<Map<String, Object>>builder()
+                    .code(ResponseUtil.INTERNAL_SERVER_ERROR_CODE)
+                    .title(ResponseUtil.INTERNAL_SERVER_ERROR)
+                    .message("Logout processing failed")
+                    .data(null)
+                    .build();
         }
+    }
 
-        Optional<UserEntity> userEntity = userRepository.findByUsername(username);
+    public BaseResponse<RefreshTokenResponseDTO> refresh(RefreshTokenRequestDTO refreshRequest) {
+        try {
+            String refreshRequestId = UUID.randomUUID().toString();
+            logger.info("Received refresh token request with ID: {}", refreshRequestId);
 
-        if (userEntity.isEmpty()) {
-            logger.warn("No user found with reference ID: {}", reference);
-            throw new RuntimeException("User not found or already logged out");
+            // Extract and validate the refresh token
+            String refreshToken = refreshRequest.getRefreshToken();
+            if (refreshToken == null || refreshToken.isEmpty()) {
+                logger.warn("Empty refresh token provided");
+                return BaseResponse.<RefreshTokenResponseDTO>builder()
+                        .code(ResponseUtil.FAILED_CODE)
+                        .title(ResponseUtil.FAILED)
+                        .message(MessageConstantUtil.REFRESH_TOKEN_FAILED)
+                        .data(null)
+                        .build();
+            }
+
+            // Validate refresh token
+            String username = jwtService.extractUsername(refreshToken);
+            if (username == null || !jwtService.isTokenValid(refreshToken, username)) {
+                logger.warn("Invalid or expired refresh token for user: {}", username);
+                return BaseResponse.<RefreshTokenResponseDTO>builder()
+                        .code(ResponseUtil.FAILED_CODE)
+                        .title(ResponseUtil.FAILED)
+                        .message(MessageConstantUtil.INVALID_REFRESH_TOKEN)
+                        .data(null)
+                        .build();
+            }
+
+            logger.debug("Validating refresh token: {}", refreshToken);
+            logger.info("Extracted username from refresh token: {}", username);
+
+            // Retrieve user from the repository
+            Optional<UserEntity> userEntity = userRepository.findByUsername(username);
+            if (userEntity.isEmpty()) {
+                logger.warn("No user found with username: {}", username);
+                return BaseResponse.<RefreshTokenResponseDTO>builder()
+                        .code(ResponseUtil.FAILED_CODE)
+                        .title(ResponseUtil.FAILED)
+                        .message(MessageConstantUtil.USER_NOT_FOUND)
+                        .data(null)
+                        .build();
+            }
+
+
+            UserEntity user = userEntity.get();
+            user.setReferencesID(refreshRequestId);
+            userRepository.save(user);
+
+            Map<String, Object> claims = new HashMap<>();
+            claims.put("username", username);
+            claims.put("reference", refreshRequestId);
+
+            String newAccessToken = jwtService.getJWTToken(username, claims);
+            String newRefreshToken = jwtService.getRefreshToken(username, claims);
+
+            logger.info("Tokens refreshed successfully for user: {}", username);
+
+
+            RefreshTokenResponseDTO responseDTO = RefreshTokenResponseDTO.builder()
+                    .token(newAccessToken)
+                    .reToken(newRefreshToken)
+                    .build();
+
+            return BaseResponse.<RefreshTokenResponseDTO>builder()
+                    .code(ResponseUtil.SUCCESS_CODE)
+                    .message("Refresh Token Generated Successfully")
+                    .data(responseDTO)
+                    .build();
+
+        } catch (ExpiredJwtException e) {
+            logger.error("Refresh token expired: {}", e.getMessage());
+            return BaseResponse.<RefreshTokenResponseDTO>builder()
+                    .code(ResponseUtil.FAILED_CODE)
+                    .title(ResponseUtil.FAILED)
+                    .message("Refresh token expired")
+                    .data(null)
+                    .build();
+        } catch (Exception e) {
+            logger.error("Token refresh failed: {}", e.getMessage(), e);
+            return BaseResponse.<RefreshTokenResponseDTO>builder()
+                    .code(ResponseUtil.FAILED_CODE)
+                    .title(ResponseUtil.FAILED)
+                    .message("Token refresh failed due to an internal error")
+                    .data(null)
+                    .build();
         }
-
-
-
-
-
-        UserEntity user = userEntity.get();
-        user.setReferencesID(null);
-
-        userRepository.save(user);
-
-        logger.info("User with reference ID: {} has been successfully logged out.", reference);
-
-        // Optional: If you are maintaining a session store (like Redis), you can also remove the session here.
-        // sessionStore.remove(referencesID);
     }
+}
 
-
-    private boolean isUserEnabled(String username) {
-        boolean isEnabled = userRepository.findByUsername(username).isPresent();
-        logger.info("Is user '{}' enabled: {}", username, isEnabled);
-        return isEnabled;
-    }
-
-    private boolean isEmailEnabled(String email) {
-        boolean isEnabled = userRepository.findByEmail(email).isPresent();
-        logger.info("Is user '{}' enabled: {}", email, isEnabled);
-        return isEnabled;
-    }
 
 
 
@@ -419,4 +329,3 @@ public class AuthService {
 
     
 
-}

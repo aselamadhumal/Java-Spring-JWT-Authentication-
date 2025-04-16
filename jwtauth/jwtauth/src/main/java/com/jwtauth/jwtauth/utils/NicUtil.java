@@ -1,7 +1,7 @@
 package com.jwtauth.jwtauth.utils;
 
 
-import com.jwtauth.jwtauth.model.UserEntity;
+import com.jwtauth.jwtauth.entity.users.UserEntity;
 import com.jwtauth.jwtauth.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

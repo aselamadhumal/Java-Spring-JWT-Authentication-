@@ -1,15 +1,14 @@
-package com.jwtauth.jwtauth.model;
+package com.jwtauth.jwtauth.entity.users;
 
-import com.jwtauth.jwtauth.annotations.mobile.ValidMobile;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.UUID;
 
+@Builder
 @Entity
 @Table(name = "users", uniqueConstraints = {
         @UniqueConstraint(columnNames = "email"),
@@ -46,10 +45,22 @@ public class UserEntity {
     @Column(nullable = false, unique = true)
     private String uuid;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(
+                    name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "id"))
+    @Builder.Default
+    private Collection<Role> roles = new ArrayList<>();
+
     @PrePersist
     public void generateUUID() {
         if (this.uuid == null) {
             this.uuid = UUID.randomUUID().toString();  // Generate UUID if not already set
         }
     }
+
+
 }

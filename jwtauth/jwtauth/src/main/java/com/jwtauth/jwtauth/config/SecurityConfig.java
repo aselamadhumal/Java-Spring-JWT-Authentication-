@@ -47,16 +47,35 @@ public class SecurityConfig {
                 }) // Stateless session
                 .authorizeHttpRequests(auth -> {
                     logger.info("Configuring endpoint access rules...");
-                    auth.requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/webjars/**").permitAll();
-                    auth.requestMatchers("/api/v1/auth/login", "/api/v1/auth/register","/api/v1/auth/refresh","/api/v1/auth/logout","api/transactions/process","api/transactions/enc","api/transactions/dec","/user-details/save","/user-details/{userId}","/api/employees/register","/api/orders","/notifications/**","/products/**","/students/**").permitAll();
+
+                    auth
+                            .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/webjars/**").permitAll()
+                            .requestMatchers("/api/v1/auth/user").hasAuthority("APP_USER")
+                            .requestMatchers(
+                                    "/api/v1/auth/login",
+                                    "/api/v1/auth/register",
+                                    "/api/v1/auth/refresh",
+                                    "/api/v1/auth/logout",
+                                    "/api/transactions/process",
+                                    "/api/transactions/enc",
+                                    "/api/transactions/dec",
+                                    "/user-details/save",
+                                    "/user-details/{userId}",
+                                    "/api/employees/register",
+                                    "/api/orders",
+                                    "/notifications/**",
+                                    "/products/**",
+                                    "/students/**"
+                            ).permitAll();
+
                     logger.info("Public endpoints allowed: /api/v1/auth/login, /api/v1/auth/register");
                     auth.anyRequest().authenticated();
                 })
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .authenticationProvider(authenticationProvider())
-                //.httpBasic(Customizer.withDefaults())
                 .build();
     }
+
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {

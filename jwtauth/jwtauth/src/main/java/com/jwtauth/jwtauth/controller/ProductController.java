@@ -1,6 +1,6 @@
 package com.jwtauth.jwtauth.controller;
 
-import com.jwtauth.jwtauth.model.Product2Entity;
+import com.jwtauth.jwtauth.entity.Product2Entity;
 import com.jwtauth.jwtauth.repository.Product2Repository;
 import com.jwtauth.jwtauth.service.GenericCrudService;
 import org.springframework.http.HttpStatus;

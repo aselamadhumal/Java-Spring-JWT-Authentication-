@@ -1,6 +1,6 @@
 package com.jwtauth.jwtauth.service;
 
-import com.jwtauth.jwtauth.model.UserEntity;
+import com.jwtauth.jwtauth.entity.users.UserEntity;
 import com.jwtauth.jwtauth.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

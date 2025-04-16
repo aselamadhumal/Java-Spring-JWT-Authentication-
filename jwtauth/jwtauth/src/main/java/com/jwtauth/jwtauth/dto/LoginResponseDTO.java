@@ -1,19 +1,15 @@
 package com.jwtauth.jwtauth.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
 public class LoginResponseDTO {
 
-    private String access_token;
-    private LocalDateTime time;
-    private String error;
-    private String message;
+    @JsonProperty("access_token")
+    private String accessToken;
+    private String time;
     private String reToken;
 }

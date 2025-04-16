@@ -1,7 +1,7 @@
 package com.jwtauth.jwtauth.handler;
 
 
-import com.jwtauth.jwtauth.model.OrderEntity;
+import com.jwtauth.jwtauth.entity.OrderEntity;
 import com.jwtauth.jwtauth.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 

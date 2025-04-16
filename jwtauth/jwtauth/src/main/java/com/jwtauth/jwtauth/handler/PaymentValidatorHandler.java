@@ -1,8 +1,8 @@
 package com.jwtauth.jwtauth.handler;
 
 
-import com.jwtauth.jwtauth.model.AuditLog;
-import com.jwtauth.jwtauth.model.OrderEntity;
+import com.jwtauth.jwtauth.entity.AuditLog;
+import com.jwtauth.jwtauth.entity.OrderEntity;
 import com.jwtauth.jwtauth.repository.AuditLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -11,6 +11,10 @@ public final class MessageConstantUtil {
     public static final String USER_REGISTERED_SUCCESSFULLY = "User registered successfully";
     public static final String INVALID_PASSWORD_PATTERN = "Invalid password pattern";
     public static final String REGISTRATION_FAILED = "User registration failed";
+    public static final String REFRESH_TOKEN_FAILED = "failed to generate refresh token";
+    public static final String USER_NOT_FOUND = "failed to find user";
+    public static final String INVALID_REFRESH_TOKEN = "Invalid or expired refresh token for user";
+
     public static final String UNEXPECTED_ERROR = "An unexpected error occurred";
 
     // Validation messages
