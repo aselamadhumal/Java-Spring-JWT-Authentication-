@@ -1,17 +1,16 @@
 package com.jwtauth.jwtauth.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Builder
 public class RefreshTokenResponseDTO {
 
+    @JsonProperty("access_token")
     private String token;
+    @JsonProperty("refresh_token")
     private String reToken;
 
 }

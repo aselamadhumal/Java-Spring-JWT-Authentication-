@@ -1,4 +1,4 @@
-package com.jwtauth.jwtauth.model;
+package com.jwtauth.jwtauth.entity;
 
 
 import jakarta.persistence.*;

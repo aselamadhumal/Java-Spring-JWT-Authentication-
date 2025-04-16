@@ -3,7 +3,7 @@ package com.jwtauth.jwtauth.service;
 import com.itextpdf.text.DocumentException;
 import com.jwtauth.jwtauth.dto.EmployeePdfDTO;
 import com.jwtauth.jwtauth.dto.EmployeeResponseDTO;
-import com.jwtauth.jwtauth.model.EmployeeEntity;
+import com.jwtauth.jwtauth.entity.EmployeeEntity;
 import com.jwtauth.jwtauth.repository.EmployeeRepository;
 import com.jwtauth.jwtauth.utils.PDFGenerator;
 import jakarta.persistence.EntityManager;

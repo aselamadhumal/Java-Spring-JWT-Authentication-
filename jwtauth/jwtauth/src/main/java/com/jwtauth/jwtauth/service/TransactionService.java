@@ -1,7 +1,7 @@
 package com.jwtauth.jwtauth.service;
 
 import com.jwtauth.jwtauth.dto.TransactionRequestDTO;
-import com.jwtauth.jwtauth.model.TransactionEntity;
+import com.jwtauth.jwtauth.entity.TransactionEntity;
 import com.jwtauth.jwtauth.repository.TransactionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

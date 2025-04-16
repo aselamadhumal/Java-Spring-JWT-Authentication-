@@ -1,7 +1,7 @@
 package com.jwtauth.jwtauth.handler;
 
 
-import com.jwtauth.jwtauth.model.ProductEntity;
+import com.jwtauth.jwtauth.entity.ProductEntity;
 import com.jwtauth.jwtauth.repository.InventoryRepository;
 import org.springframework.stereotype.Service;
 
