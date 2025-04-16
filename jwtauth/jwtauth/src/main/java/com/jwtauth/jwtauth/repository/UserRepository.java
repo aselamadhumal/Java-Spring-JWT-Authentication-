@@ -1,8 +1,11 @@
 package com.jwtauth.jwtauth.repository;
 
 import com.jwtauth.jwtauth.model.UserEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<UserEntity, String> {
@@ -13,4 +16,9 @@ public interface UserRepository extends JpaRepository<UserEntity, String> {
     //boolean existsByReferencesID(String referencesID);
 
     //Optional<UserEntity> findByReferencesID(String referencesID);
+
+    //Page<UserEntity> findAll(Pageable pageable);
+
+    boolean existsUserByEmail(String email);
+
 }

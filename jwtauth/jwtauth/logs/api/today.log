@@ -1,0 +1,9 @@
+2025-03-01 14:50:54 [http-nio-9095-exec-4] INFO  API_LOG - POST request to URL: http://localhost:9094/users/save
+2025-03-01 14:56:26 [http-nio-9095-exec-1] INFO  API_LOG - Creating user details in bank with request body: {"name":"fcvvc cv","age":55,"email":"v@sfvvdgmsdail.com","password":"*****"}
+2025-03-01 14:56:26 [http-nio-9095-exec-1] INFO  API_LOG - POST request to URL: http://localhost:9094/users/save
+2025-03-01 14:58:58 [http-nio-9095-exec-1] INFO  API_LOG - Creating user details in bank with request body: {"name":"fcvvdddc cv","age":55,"email":"v@sfvvdgmsdail.com","password":"*****"}
+2025-03-01 14:58:58 [http-nio-9095-exec-1] INFO  API_LOG - POST request to URL: http://localhost:9094/users/save
+
+2025-03-01 15:22:01 [http-nio-9095-exec-2] INFO  API_LOG - Calling external API to create user details: com.jwtauth.jwtauth.dto.UserRequestDTO@533d7e92
+2025-03-01 15:22:01 [http-nio-9095-exec-2] INFO  API_LOG - Creating user details in bank with request body: {"name":"fcvvdddc cv","age":55,"email":"v@sfvvdgmsdail.com","password":"*****"}
+2025-03-01 15:22:01 [http-nio-9095-exec-2] INFO  API_LOG - POST request to URL: http://localhost:9094/users/save

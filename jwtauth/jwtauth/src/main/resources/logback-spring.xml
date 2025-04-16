@@ -4,22 +4,43 @@
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
             <layout class="com.jwtauth.jwtauth.utils.MaskingPatternLayout">
-                <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] [%thread] %-5level %logger{36} - %msg%n</pattern>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %logger{36} - %msg%n</pattern>
                 <maskPattern>\"password\"\s*:\s*\"(.*?)\"</maskPattern>
                 <maskPattern>\"username\"\s*:\s*\"(.*?)\"</maskPattern>
+                <maskPattern>\"access_token\"\s*:\s*\"(.*?)\"</maskPattern>
+                <maskPattern>\"reToken\"\s*:\s*\"(.*?)\"</maskPattern>
+                <maskPattern>\"refreshToken\"\s*:\s*\"(.*?)\"</maskPattern>
+                <maskPattern>\"accountNo\"\s*:\s*\"(.*?)\"</maskPattern>
+                <maskPattern>\"number\"\s*:\s*\"(.*?)\"</maskPattern>
+                <maskPattern>\"nic\"\s*:\s*\"(.*?)\"</maskPattern>
+                <maskPattern>\"accessToken\"\s*:\s*\"(.*?)\"</maskPattern>
+                <maskPattern>\"account\"\s*:\s*\"(.*?)\"</maskPattern>
+                <maskPattern>\"NIC\"\s*:\s*\"(.*?)\"</maskPattern>
             </layout>
         </encoder>
     </appender>
 
-    <appender name="CONSOLE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>./logs/application.log</file>
+    <appender name="APP" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>./logs/today.log</file>
         <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
             <layout class="com.jwtauth.jwtauth.utils.MaskingPatternLayout">
-                <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %-5level %logger{36} - %msg%n</pattern>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %logger{36} - %msg%n</pattern>
                 <maskPattern>\"password\"\s*:\s*\"(.*?)\"</maskPattern> <!-- Regex to match passwords -->
                 <maskPattern>\"username\"\s*:\s*\"(.*?)\"</maskPattern>
+                <maskPattern>\"access_token\"\s*:\s*\"(.*?)\"</maskPattern>
+                <maskPattern>\"reToken\"\s*:\s*\"(.*?)\"</maskPattern>
+                <maskPattern>\"refreshToken\"\s*:\s*\"(.*?)\"</maskPattern>
+                <maskPattern>\"accountNo\"\s*:\s*\"(.*?)\"</maskPattern>
+                <maskPattern>\"number\"\s*:\s*\"(.*?)\"</maskPattern>
+                <maskPattern>\"nic\"\s*:\s*\"(.*?)\"</maskPattern>
+                <maskPattern>\"accessToken\"\s*:\s*\"(.*?)\"</maskPattern>
+                <maskPattern>\"account\"\s*:\s*\"(.*?)\"</maskPattern>
+                <maskPattern>\"NIC\"\s*:\s*\"(.*?)\"</maskPattern>
             </layout>
         </encoder>
+
+
+
 
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>./logs/archive/application-%d{yyyy-MM-dd}-%i.log.zip</fileNamePattern>
@@ -28,9 +49,35 @@
         </rollingPolicy>
     </appender>
 
+
+    <appender name="API_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>./logs/api/today.log</file>
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="com.jwtauth.jwtauth.utils.MaskingPatternLayout">
+                <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+
+                        <maskPattern>\"password\"\s*:\s*\"(.*?)\"</maskPattern>
+
+            </layout>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>./logs/archive/api-calls-%d{yyyy-MM-dd}-%i.log.zip</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>100</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+
+    <!-- Define a root logger -->
     <root level="INFO">
-        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="APP"/>
         <appender-ref ref="STDOUT"/>
     </root>
+
+    <!-- Define a specific logger for API calls -->
+    <logger name="API_LOG" level="INFO">
+        <appender-ref ref="API_LOG"/>
+    </logger>
 
 </configuration>
